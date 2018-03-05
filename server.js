@@ -1,22 +1,27 @@
 var express = require('express');
-var path = require('path');
-var loginRouter = require('./routes/loginRouter');
-var anasayfaRouter = require('./routes/anasayfaRouter');
-
-
-
 var app = express();
+var server = require('http').createServer(app);
+//var loginRouter = require('./routes/loginRouter');
+//var anasayfaRouter = require('./routes/anasayfaRouter');
 
-var server= app.listen(3000);
+
+
+
+
 var io = require('socket.io').listen(server);
 var db = require('./models/db');
 var passport = require('passport');
 var flash    = require('connect-flash');
 
+
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
+var path = require('path');
+var users = {};
+
+server.listen(3000);
 
 
 
@@ -53,9 +58,48 @@ require('./routes/routes.js')(app, passport); // load our routes and pass in our
 require('./config/passport')(passport);
 
 
-io.sockets.on("connection",function (socket) {
-    socket.on("gonder",function (data) {
-        io.emit("alici",data);
+
+io.sockets.on('connection', function (socket) {
+
+
+    socket.on('new user', function (data) {
+
+            socket.nickname = data;
+            users[socket.nickname] = socket;
+            // nicknames.push(socket.nickname);
+            updateNicknames();
     });
-})
+
+    function updateNicknames() {
+        io.sockets.emit('usernames', Object.keys(users));
+    }
+
+    socket.on('send message', function (data,callback) {
+        var msg = data.trim();
+        if(msg.substring(0,3)=== '/w '){
+            msg = msg.substring(3);
+            var ind = msg.indexOf(' ');
+            if(ind !== -1){
+                var name = msg.substring(0,ind);
+                var msg = msg.substring(ind+1);
+                if (name in users){
+                    users[name].emit('whisper', {msg:msg, nick: socket.nickname});
+                    console.log('Whisper !');
+                }else {
+                    callback('Error! geçerli kullanıcı girin.');
+                }
+            }else {
+                callback('Error! lütfen kişisel mesaj girin.');
+            }
+        }else {
+            io.sockets.emit('new message', {msg:msg, nick: socket.nickname});
+        }
+
+    });
+    socket.on('disconnect', function (data) {
+        if(!socket.nickname) return;
+        delete users[socket.nickname];
+        updateNicknames();
+    });
+});
 

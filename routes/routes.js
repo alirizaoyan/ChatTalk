@@ -2,7 +2,7 @@
 
 module.exports = function(app, passport) {
 
-    var sess;
+
 
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/profile', // redirect to the secure profile section
@@ -54,9 +54,10 @@ module.exports = function(app, passport) {
         });
     });
     app.get('/anasayfa', isLoggedIn, function(req, res) {
-        res.render('ChatPage.ejs');
+        res.render('ChatPage.ejs', {
+            user : req.user // get the user out of session and pass to template
+        });
     });
-//, {user : req.user // get the user out of session and pass to template}
     // =====================================
     // LOGOUT ==============================
     // =====================================
@@ -79,6 +80,7 @@ function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
+
 
     // if they aren't redirect them to the home page
     res.redirect('/');
