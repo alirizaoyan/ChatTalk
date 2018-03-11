@@ -6,12 +6,11 @@ var server = require('http').createServer(app);
 
 
 
-
-
 var io = require('socket.io').listen(server);
 var db = require('./models/db');
 var passport = require('passport');
 var flash    = require('connect-flash');
+
 
 
 var morgan       = require('morgan');
@@ -33,7 +32,6 @@ app.use(bodyParser()); // get information from html forms
 
 
 
-
 app.use('/public',express.static(path.join(__dirname,'public')));
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'/views'));
@@ -47,7 +45,7 @@ app.use(bodyParser.json());
 
 
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({ secret: 'bitirmecalismasi' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -57,20 +55,26 @@ require('./routes/routes.js')(app, passport); // load our routes and pass in our
 
 require('./config/passport')(passport);
 
+var giris = require('./config/passport');
 
 
 io.sockets.on('connection', function (socket) {
 
+    socket.on('yeni', function (data) {
 
-    socket.on('new user', function (data) {
-
-            socket.nickname = data;
+            socket.nickname = giris.posta;
             users[socket.nickname] = socket;
+
             // nicknames.push(socket.nickname);
             updateNicknames();
+            console.log(socket.nickname);
     });
 
+
+
     function updateNicknames() {
+       // console.log(users);
+      //  console.log(socket.nickname);
         io.sockets.emit('usernames', Object.keys(users));
     }
 
@@ -87,12 +91,16 @@ io.sockets.on('connection', function (socket) {
                     console.log('Whisper !');
                 }else {
                     callback('Error! geçerli kullanıcı girin.');
+                    console.log(socket.nickname);
                 }
             }else {
                 callback('Error! lütfen kişisel mesaj girin.');
             }
         }else {
             io.sockets.emit('new message', {msg:msg, nick: socket.nickname});
+            console.log(users);
+           // console.log(socket.nickname);
+           // console.log(giris.posta);
         }
 
     });
@@ -100,6 +108,7 @@ io.sockets.on('connection', function (socket) {
         if(!socket.nickname) return;
         delete users[socket.nickname];
         updateNicknames();
+        console.log('çıkış');
     });
 });
 

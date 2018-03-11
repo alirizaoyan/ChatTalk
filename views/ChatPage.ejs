@@ -1,10 +1,12 @@
 <html>
     <head>
+        <title>Chat & Talk</title>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/public/css/bootstrap.min.css">
         <link rel="stylesheet" href="/public/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="/public/stylesheets/chatpage.css">
     </head>
+
     <style>
         .error{
             color: red;
@@ -30,7 +32,7 @@
                 <div class="chat-box bg-white button">
                     <div  class="input-group ">
                         <form id="send-message">
-                            <input id="mesaj" type="text" placeholder="Type your message here" >
+                            <input id="mesaj" class="form-control border no-shadow no-rounded" placeholder="Type your message here" >
             			    <input class="btn btn-success no-rounded" type="submit">
                         </form>
                     </div><!-- /input-group -->
@@ -38,7 +40,7 @@
             </div>
         </div>
     </div>
-        <script src="/socket.io/socket.io.js"></script>
+        <script src="/public/js/socket.io.js"></script>
         <script type="text/javascript" src="/public/js/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="/public/js/Chatpagee.js"></script>
     </body>
