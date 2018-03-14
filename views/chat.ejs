@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/stylesheets/main.css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="col-md-2 userlist">
+        <div class="panel-heading">
+            <i class="glyphicon glyphicon-user"></i>Online (5)
+        </div>
+        <ul>
+            <li>Kullanıcı 1</li>
+            <li>Kullanıcı 2</li>
+        </ul>
+    </div>
+    <div class="col-md-10">
+        <div id="livechat-container">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Lets Chat
+                </div>
+                <div class="panel-body">
+                    <ul id="mesajlar" class="chat">
+
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <form>
+                        <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.15/dist/vue.js"></script>
+    <script type="text/javascript" src="/public/js/client.js"></script>
+</body>
+</html>

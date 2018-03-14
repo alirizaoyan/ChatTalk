@@ -1,10 +1,10 @@
 <html>
     <head>
         <title>Chat & Talk</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/public/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/public/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="/public/stylesheets/chatpage.css">
+        <link rel="stylesheet" href="/public/stylesheets/main.css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
 
     <style>
@@ -17,25 +17,31 @@
         }
     </style>
     <body>
-    <div class="container bootstrap snippet">
-        <div class="row">
-            <div class="col-md-4 bg-white " id="users"></div>
+    <div id="app">
+        <div class="col-md-2 userlist">
+            <div class="panel-heading" id="bagliKullanici">
 
-            <!--=========================================================-->
-            <!-- selected chat -->
-            <div class="col-md-8 bg-white ">
-                <div  class="chat-message">
-                    <ul id="mesajlar" class="chat">
+            </div>
+            <ul id="users">
 
-                    </ul>
-                </div>
-                <div class="chat-box bg-white button">
-                    <div  class="input-group ">
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div id="livechat-container">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Lets Chat
+                    </div>
+                    <div class="panel-body" id="panel">
+                        <ul id="mesajlar" class="chat">
+
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
                         <form id="send-message">
-                            <input id="mesaj" class="form-control border no-shadow no-rounded" placeholder="Type your message here" >
-            			    <input class="btn btn-success no-rounded" type="submit">
+                            <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın" id="mesaj">
                         </form>
-                    </div><!-- /input-group -->
+                    </div>
                 </div>
             </div>
         </div>

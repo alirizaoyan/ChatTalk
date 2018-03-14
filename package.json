@@ -24,6 +24,7 @@
     "passport-local": "~1.0.0",
     "serve-favicon": "~2.4.5",
     "session.socket.io": "^0.2.1",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "vue": "^2.5.15"
   }
 }

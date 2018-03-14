@@ -6,6 +6,10 @@ $(document).ready(function ()
     var $messageBox = $('#mesaj');
     var $chat = $('#mesajlar');
     var $users = $('#users');
+    var $kisiSayisi = $('#bagliKullanici');
+
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    var today  = new Date();
 
     var sayi = 0;
 
@@ -28,9 +32,9 @@ $(document).ready(function ()
         $chat.append('<div>' +
             '<li  class="left clearfix">'+
             '<div class="chat-body clearfix">'+
-            '<div class="header"><strong class="primary-font">'+ data.nick+'</strong>'+
-            '</div>' +data.msg+ '</div></li></div>');
-        document.getElementById("mesajlar").scrollTop = document.getElementById("mesajlar").scrollHeight;
+            '<div class="header"><strong class="primary-font">'+ data.nick+'</strong><span class="sag">'+  today.toLocaleDateString("tr-TR",options)+'</span> '+
+            '</div>' +data.msg+'</div></li></div>');
+        document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
 
 
@@ -40,6 +44,9 @@ $(document).ready(function ()
 
     socket.on('usernames', function (data) {
       //  alert('selam');
+
+        $kisiSayisi.html('<i class="glyphicon glyphicon-user"></i> Online (' + data.length +')');
+
         var html ='';
         for(i=0; i<data.length; i++){
             html += data[i]+ '</br>';
@@ -48,14 +55,3 @@ $(document).ready(function ()
     });
 
 });
-
-//gonderen kişi:'+data.user+  <%= user.local.email %>
-/*'<li class="active bounceInDown">'+
-'<a href="#" class="clearfix">'+
-'<img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">'+
-'<div class="friend-name">'+
-'<strong>'+html+'</strong>'+
-'</div>'+
-'<small class="chat-alert label label-danger">1</small>'+
-'</a>'+
-'</li>'*/

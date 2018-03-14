@@ -63,11 +63,12 @@ io.sockets.on('connection', function (socket) {
     socket.on('yeni', function (data) {
 
             socket.nickname = giris.posta;
+
             users[socket.nickname] = socket;
 
             // nicknames.push(socket.nickname);
             updateNicknames();
-            console.log(socket.nickname);
+           // console.log(socket.nickname);
     });
 
 
@@ -98,7 +99,7 @@ io.sockets.on('connection', function (socket) {
             }
         }else {
             io.sockets.emit('new message', {msg:msg, nick: socket.nickname});
-            console.log(users);
+              console.log(users);
            // console.log(socket.nickname);
            // console.log(giris.posta);
         }

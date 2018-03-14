@@ -78,9 +78,9 @@ small, .small {
 }
 
 .chat {
-    height: 500px;
     list-style: none;
     margin: 0;
+    padding: 0;
     overflow-y: scroll;
 }
 
@@ -194,13 +194,4 @@ img {
 a:hover, a:active, a:focus {
     text-decoration: none;
     outline: 0;
-}
-
-.mystyle{
-
-}
-
-.button{
-    width: 50%;
-    float: right;
 }
