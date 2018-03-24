@@ -3,7 +3,6 @@
 }
 
 .userlist{
-    overflow-y: scroll;
     height: 700px;
     border: 1px solid dimgray;
 }
@@ -45,7 +44,18 @@
 
 .panel-body{
     overflow-y: scroll;
+}
+
+.mesaj {
     height: 590px;
+}
+
+.video {
+    height: 620px;
+}
+
+.user{
+    height: 555px;
 }
 
 ::-webkit-scrollbar-track{
@@ -75,4 +85,12 @@ img {
 
 .sag {
     float: right;
+}
+
+div.alt {
+    position: absolute;
+}
+
+.odaText{
+    margin-bottom: 10px;
 }

@@ -18,21 +18,26 @@
     </style>
     <body>
     <div id="app">
-        <div class="col-md-2 userlist">
-            <div class="panel-heading" id="bagliKullanici">
+            <div class="col-md-2 userlist">
+                <div class="panel-heading" id="bagliKullanici">
 
+                </div>
+                <ul class="panel-body user" id="users">
+
+                </ul>
+                <div class="panel-footer">
+                    <input class="odaText" type="text" id="oda" placeholder="Oda ismi girin" style="width: 100%"><br>
+                    <button id="odaGir" style="width: 50%" onclick="odaGiris()">Giriş</button>
+                    <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
+                </div>
             </div>
-            <ul id="users">
-
-            </ul>
-        </div>
         <div class="col-md-10">
             <div id="livechat-container">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         Lets Chat
                     </div>
-                    <div class="panel-body" id="panel">
+                    <div class="panel-body mesaj" id="panel">
                         <ul id="mesajlar" class="chat">
 
                         </ul>
@@ -44,8 +49,31 @@
                     </div>
                 </div>
             </div>
+            <div id="video" hidden>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Lets Talk
+                    </div>
+                    <div class="panel-body video">
+
+                    </div>
+                    <div class="panel-footer" id="bilgi">
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+        <script>
+            function odaGiris() {
+                document.getElementById("livechat-container").hidden =true;
+                document.getElementById("video").hidden =false;
+            }
+            function odaCikis() {
+                document.getElementById("livechat-container").hidden =false;
+                document.getElementById("video").hidden =true;
+            }
+        </script>
         <script src="/public/js/socket.io.js"></script>
         <script type="text/javascript" src="/public/js/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="/public/js/Chatpagee.js"></script>

@@ -111,5 +111,23 @@ io.sockets.on('connection', function (socket) {
         updateNicknames();
         console.log('çıkış');
     });
+
+    socket.on('joinRoom', (data) => {
+       socket.join(data.name, () => {
+           io.to(data.name).emit('new join', {count: kullaniciSayisi(io,data)});
+           socket.emit('log', {mesaj: 'Odaya girdiniz.'});
+       });
+    });
+
+    socket.on('leave', (data)=>{
+       socket.leave(data.name, ()=>{
+           io.to(data.name).emit('leave room', {count: kullaniciSayisi(io,data)});
+           socket.emit('socket leave', {mesaj: 'Odadan ayrıldınız.'});
+       });
+    });
 });
 
+const kullaniciSayisi = (io,data) =>{
+  const room = io.sockets.adapter.rooms[data.name];
+  return room ? room.length : 0;
+};

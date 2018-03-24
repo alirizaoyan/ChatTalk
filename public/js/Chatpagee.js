@@ -11,6 +11,8 @@ $(document).ready(function ()
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
     var today  = new Date();
 
+
+
     var sayi = 0;
 
     if (sayi == 0){
@@ -18,6 +20,33 @@ $(document).ready(function ()
         sayi++;
     }
 
+    $('#odaGir').on('click', () => {
+        socket.emit('joinRoom', { name: $('#oda').val()});
+    });
+
+    socket.on('new join', (data)=>{
+        $('#bilgi').html('Bu odada <b>'+ data.count +'</b> kişi var.');
+    });
+
+    socket.on('log', (data)=>{
+        $('#bilgi').append(data.mesaj);
+        $('#oda, #odaGir').attr('disabled','disabled');
+        $('#odaCik').show();
+    });
+
+    socket.on('socket leave', (data)=>{
+        $('#bilgi').append('</b>'+data.mesaj+'</b>');
+        $('#oda, #odaGir').attr('enabled','enabled');
+        $('#odaCik').hide();
+    });
+
+    $('#odaCik').on('click', ()=>{
+       socket.emit('leave', {name: $('#oda').val()});
+    });
+
+    socket.on('leave room', (data)=>{
+        $('#bilgi').html('Bu odada <b>'+ data.count +'</b> kişi var.');
+    });
 
     $messageForm.submit(function (e) {
         e.preventDefault();
@@ -52,6 +81,7 @@ $(document).ready(function ()
             html += data[i]+ '</br>';
             $users.html(html);
         }
+        document.getElementById("users").scrollTop = document.getElementById("users").scrollHeight;
     });
 
 });
