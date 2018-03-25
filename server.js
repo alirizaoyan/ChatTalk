@@ -1,8 +1,8 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-//var loginRouter = require('./routes/loginRouter');
-//var anasayfaRouter = require('./routes/anasayfaRouter');
+
+var Message = require('./models/message');
 
 
 
@@ -66,6 +66,18 @@ io.sockets.on('connection', function (socket) {
 
             users[socket.nickname] = socket;
 
+        Message.find({
+            whom: socket.nickname
+        }, (err,veri)=>{
+            if(err)
+                console.log(err);
+            if(veri !== null){
+                socket.emit('gonder', veri);
+              //  console.log(veri);
+            }
+
+        });
+
             // nicknames.push(socket.nickname);
             updateNicknames();
            // console.log(socket.nickname);
@@ -79,7 +91,21 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('usernames', Object.keys(users));
     }
 
+    socket.on('gericevrim', function (data) {
+       // console.log(data);
+
+        for(i=0; i<data.length; i++){
+            var isim = data[i].whom;
+            var msg = data[i].message;
+            var nick = data[i].user;
+            if(isim in users){
+                users[isim].emit('message', {msg: msg, nick: nick});
+            }
+        }
+    });
+
     socket.on('send message', function (data,callback) {
+
         var msg = data.trim();
         if(msg.substring(0,3)=== '/w '){
             msg = msg.substring(3);
@@ -99,10 +125,19 @@ io.sockets.on('connection', function (socket) {
             }
         }else {
             io.sockets.emit('new message', {msg:msg, nick: socket.nickname});
-              console.log(users);
+           //   console.log(users);
            // console.log(socket.nickname);
            // console.log(giris.posta);
         }
+
+        var newMsg = new Message();
+        newMsg.user = socket.nickname;
+        newMsg.message = data;
+        newMsg.whom = name;
+
+        newMsg.save(function() {
+            console.log(newMsg);
+        });
 
     });
     socket.on('disconnect', function (data) {

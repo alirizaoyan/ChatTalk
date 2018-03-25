@@ -34,6 +34,14 @@ $(document).ready(function ()
         $('#odaCik').show();
     });
 
+    socket.on('gonder', function (data) {
+       socket.emit('gericevrim', data);
+    });
+
+    socket.on('message', function (data) {
+        $chat.append('<span class="whisper"><b>' + data.nick+ ':</b>' + data.msg + "</span></br>");
+    });
+
     socket.on('socket leave', (data)=>{
         $('#bilgi').append('</b>'+data.mesaj+'</b>');
         $('#oda, #odaGir').attr('enabled','enabled');
