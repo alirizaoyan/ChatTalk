@@ -3,6 +3,7 @@ var app = express();
 var server = require('http').createServer(app);
 
 var Message = require('./models/message');
+var User = require('./models/kullanici');
 
 
 
@@ -96,17 +97,30 @@ io.sockets.on('connection', function (socket) {
 
         for(i=0; i<data.length; i++){
             var isim = data[i].whom;
-            var msg = data[i].message;
+            var msg = data[i].message.trim();
             var nick = data[i].user;
+            var time = data[i].time;
+
+                msg = msg.substring(3);
+                var ind = msg.indexOf(' ');
+
+                var msg = msg.substring(ind+1);
+
             if(isim in users){
-                users[isim].emit('message', {msg: msg, nick: nick});
+                users[isim].emit('message', {msg: msg, nick: nick, time: time});
             }
         }
     });
 
     socket.on('send message', function (data,callback) {
 
-        var msg = data.trim();
+        console.log(data.mesaj);
+        console.log(data.datee);
+
+        var newMsg = new Message();
+        var bosluk = "";
+
+        var msg = data.mesaj.trim();
         if(msg.substring(0,3)=== '/w '){
             msg = msg.substring(3);
             var ind = msg.indexOf(' ');
@@ -114,31 +128,55 @@ io.sockets.on('connection', function (socket) {
                 var name = msg.substring(0,ind);
                 var msg = msg.substring(ind+1);
                 if (name in users){
-                    users[name].emit('whisper', {msg:msg, nick: socket.nickname});
+                    users[name].emit('whisper', {msg:msg, nick: socket.nickname, time: data.datee});
+
+                    newMsg.user = socket.nickname;
+                    newMsg.message = data.mesaj;
+                    newMsg.whom = name;
+                    newMsg.time = data.datee;
+
+                    newMsg.save(function() {
+                        console.log(newMsg);
+                    });
+
                     console.log('Whisper !');
-                }else {
-                    callback('Error! geçerli kullanıcı girin.');
-                    console.log(socket.nickname);
+                }else{
+
+                    User.find({
+                        email: name
+                    }, (err,veri)=>{
+                        console.log(veri);
+                        if(err)
+                            console.log(err);
+                        if(veri == bosluk){
+                            callback('Error! geçerli kullanıcı girin.');
+                        }else{
+                            newMsg.user = socket.nickname;
+                            newMsg.message = data.mesaj;
+                            newMsg.whom = name;
+                            newMsg.time = data.datee;
+
+                            newMsg.save(function() {
+                                console.log(newMsg);
+                            });
+                            callback('Kullanıcı online olduğunda mesajınız iletilecektir.');
+                        }
+                    });
                 }
             }else {
                 callback('Error! lütfen kişisel mesaj girin.');
             }
         }else {
             io.sockets.emit('new message', {msg:msg, nick: socket.nickname});
-           //   console.log(users);
-           // console.log(socket.nickname);
-           // console.log(giris.posta);
+
+            newMsg.user = socket.nickname;
+            newMsg.message = data.mesaj;
+            newMsg.time = data.datee;
+
+            newMsg.save(function() {
+                console.log(newMsg);
+            });
         }
-
-        var newMsg = new Message();
-        newMsg.user = socket.nickname;
-        newMsg.message = data;
-        newMsg.whom = name;
-
-        newMsg.save(function() {
-            console.log(newMsg);
-        });
-
     });
     socket.on('disconnect', function (data) {
         if(!socket.nickname) return;

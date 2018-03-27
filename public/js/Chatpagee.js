@@ -7,6 +7,8 @@ $(document).ready(function ()
     var $chat = $('#mesajlar');
     var $users = $('#users');
     var $kisiSayisi = $('#bagliKullanici');
+    var oda = document.getElementById("oda");
+    var odaGir = document.getElementById("odaGir");
 
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
     var today  = new Date();
@@ -39,12 +41,16 @@ $(document).ready(function ()
     });
 
     socket.on('message', function (data) {
-        $chat.append('<span class="whisper"><b>' + data.nick+ ':</b>' + data.msg + "</span></br>");
+        $chat.append('<div>' +
+            '<li  class="left clearfix">'+
+            '<div class="chat-body clearfix">'+
+            '<div class="header"><strong class="primary-font" style="color: black">'+ data.nick+" (Çevrimdışı Gelen)"+'</strong><span class="sag">'+ data.time +'</span> '+
+            '</div>' +data.msg+'</div></li></div>');
     });
 
     socket.on('socket leave', (data)=>{
-        $('#bilgi').append('</b>'+data.mesaj+'</b>');
-        $('#oda, #odaGir').attr('enabled','enabled');
+        oda.removeAttribute("disabled");
+        odaGir.removeAttribute("disabled");
         $('#odaCik').hide();
     });
 
@@ -58,7 +64,7 @@ $(document).ready(function ()
 
     $messageForm.submit(function (e) {
         e.preventDefault();
-        socket.emit('send message', $messageBox.val(), function (data) {
+        socket.emit('send message', {mesaj: $messageBox.val(), datee: today.toLocaleDateString("tr-TR",options)}, function (data) {
             //add stuff later
             $chat.append('<span class="error">' + data + "</span></br>");
         });
@@ -76,7 +82,11 @@ $(document).ready(function ()
 
 
     socket.on('whisper', function (data) {
-        $chat.append('<span class="whisper"><b>' + data.nick+ ':</b>' + data.msg + "</span></br>");
+        $chat.append('<div>' +
+            '<li  class="left clearfix">'+
+            '<div class="chat-body clearfix">'+
+            '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" (Özel)"+'</strong><span class="sag">'+ data.time +'</span> '+
+            '</div>' +data.msg+'</div></li></div>');
     });
 
     socket.on('usernames', function (data) {
