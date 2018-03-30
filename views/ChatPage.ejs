@@ -25,10 +25,17 @@
                 <ul class="panel-body user" id="users">
 
                 </ul>
-                <div class="panel-footer">
-                    <input class="odaText" type="text" id="oda" placeholder="Oda ismi girin" style="width: 100%"><br>
-                    <button id="odaGir" style="width: 50%" onclick="odaGiris()">Giriş</button>
-                    <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
+                <div class="panel-footer" style="background-color: white">
+                    <div>
+                        <input class="odaText" type="text" id="grp-oda" placeholder="Oda ismi girin (Sohbet)" style="width: 100%"><br>
+                        <button id="grp-odaGir" style="width: 50%" onclick="grpOdaGiris()">Giriş</button>
+                        <button id="grp-odaCik" style="width: 50%; display: none" class="sag" onclick="grpOdaCikis()">Çıkış</button>
+                    </div></br>
+                    <div>
+                        <input class="odaText" type="text" id="oda" placeholder="Oda ismi girin (Video)" style="width: 100%"><br>
+                        <button id="odaGir" style="width: 50%" onclick="odaGiris()">Giriş</button>
+                        <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
+                    </div>
                 </div>
             </div>
         <div class="col-md-10">
@@ -49,6 +56,25 @@
                     </div>
                 </div>
             </div>
+
+            <div id="grp-chat" hidden>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="sayi">
+                        Group
+                    </div>
+                    <div class="panel-body mesaj" id="grp-panel">
+                        <ul id="grp-mesajlar" class="chat">
+
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <form id="grp-send-message">
+                            <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın" id="grp-mesaj">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div id="video" hidden>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
@@ -68,10 +94,22 @@
             function odaGiris() {
                 document.getElementById("livechat-container").hidden =true;
                 document.getElementById("video").hidden =false;
+                document.getElementById("grp-chat").hidden =true;
             }
             function odaCikis() {
                 document.getElementById("livechat-container").hidden =false;
                 document.getElementById("video").hidden =true;
+                document.getElementById("grp-chat").hidden =true;
+            }
+            function grpOdaGiris() {
+                document.getElementById("livechat-container").hidden =true;
+                document.getElementById("video").hidden =true;
+                document.getElementById("grp-chat").hidden =false;
+            }
+            function grpOdaCikis() {
+                document.getElementById("livechat-container").hidden =false;
+                document.getElementById("video").hidden =true;
+                document.getElementById("grp-chat").hidden =true;
             }
         </script>
         <script src="/public/js/socket.io.js"></script>

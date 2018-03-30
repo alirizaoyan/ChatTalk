@@ -4,6 +4,7 @@ var server = require('http').createServer(app);
 
 var Message = require('./models/message');
 var User = require('./models/kullanici');
+var GrpMessage = require('./models/grpmessage');
 
 
 
@@ -178,11 +179,32 @@ io.sockets.on('connection', function (socket) {
             });
         }
     });
+
+    socket.on('grp message', (data)=>{
+        io.to(data.name).emit('new grp message', {msg:data.mesaj, nick: socket.nickname});
+
+        var newGrpMsg = new GrpMessage();
+        newGrpMsg.user = socket.nickname;
+        newGrpMsg.message = data.mesaj;
+        newGrpMsg.time = data.datee;
+        newGrpMsg.group = data.room;
+
+        newGrpMsg.save(function () {
+           console.log(newGrpMsg);
+        });
+    });
     socket.on('disconnect', function (data) {
         if(!socket.nickname) return;
         delete users[socket.nickname];
         updateNicknames();
         console.log('çıkış');
+    });
+
+    socket.on('grpRoom', (data)=>{
+       socket.join(data.name, ()=>{
+           io.to(data.name).emit('new grp', {count: kullaniciSayisi(io,data)});
+           io.to(data.name).emit('new grpJoin', {name: socket.nickname});
+       });
     });
 
     socket.on('joinRoom', (data) => {
@@ -197,6 +219,16 @@ io.sockets.on('connection', function (socket) {
            io.to(data.name).emit('leave room', {count: kullaniciSayisi(io,data)});
            socket.emit('socket leave', {mesaj: 'Odadan ayrıldınız.'});
        });
+    });
+
+    socket.on('grp leave', (data)=>{
+        socket.leave(data.name, ()=>{
+            io.to(data.name).emit('leave grpRoom', {count: kullaniciSayisi(io,data), name: socket.nickname});
+            if(kullaniciSayisi(io,data)=== 0){
+                socket.emit('destroy');
+            }
+            socket.emit('socket grpLeave', {mesaj: 'Odadan ayrıldınız.'});
+        });
     });
 });
 
