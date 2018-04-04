@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
+var serverrtc = require('http').createServer(app);
 
 var Message = require('./models/message');
 var User = require('./models/kullanici');
@@ -56,6 +57,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 require('./config/passport')(passport);
+
+require('./Signaling-Server.js')(serverrtc);
 
 var giris = require('./config/passport');
 
