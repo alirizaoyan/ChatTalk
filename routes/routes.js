@@ -1,6 +1,6 @@
 // app/routes.js
 
-module.exports = function(app, passport) {
+module.exports = function(app,  passport) {
 
 
 
@@ -73,7 +73,23 @@ module.exports = function(app, passport) {
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+
+    app.get('*', function(req, res) {
+        console.log("req.headers : " +req.headers.host + req.url);
+
+        if (req.url == "/goruntu")
+        {
+            res.render('One-to-One.ejs');
+
+        }
+        else if (req.url == "/conference")
+        {
+            res.render('Video_Conference.ejs');
+        }
+
+    });
 };
+
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {

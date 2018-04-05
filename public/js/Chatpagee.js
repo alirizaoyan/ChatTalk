@@ -2,6 +2,7 @@
 $(document).ready(function ()
 {
     var socket = io.connect();
+
     var $messageForm = $('#send-message');
     var $messageBox = $('#mesaj');
     var $chat = $('#mesajlar');
@@ -20,7 +21,6 @@ $(document).ready(function ()
 
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
     var today  = new Date();
-
 
 
     var sayi = 0;
@@ -113,6 +113,7 @@ $(document).ready(function ()
         e.preventDefault();
         socket.emit('send message', {mesaj: $messageBox.val(), datee: today.toLocaleDateString("tr-TR",options)}, function (data) {
             //add stuff later
+            // alert("emit'e girdi");
             $chat.append('<span class="error">' + data + "</span></br>");
         });
         $messageBox.val('');
@@ -154,7 +155,6 @@ $(document).ready(function ()
     });
 
     socket.on('usernames', function (data) {
-      //  alert('selam');
 
         $kisiSayisi.html('<i class="glyphicon glyphicon-user"></i> Online (' + data.length +')');
 

@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/public/stylesheets/main.css">
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     </head>
 
     <style>
@@ -33,9 +33,13 @@
                     </div></br>
                     <div>
                         <input class="odaText" type="text" id="oda" placeholder="Oda ismi girin (Video)" style="width: 100%"><br>
-                        <button id="odaGir" style="width: 50%" onclick="odaGiris()">Giriş</button>
+                        <a href="http://localhost:3001/goruntu"  id="odaGir" style="width: 50%">Bire Bir</a>
                         <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
+                    </div></br>
+                    <div>
+                        <a href="http://localhost:3001/conference"  id="odaGir" style="width: 50%">Konferans</a>
                     </div>
+
                 </div>
             </div>
         <div class="col-md-10">
@@ -116,5 +120,6 @@
         <script src="/public/js/socket.io.js"></script>
         <script type="text/javascript" src="/public/js/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="/public/js/Chatpagee.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
 </html>
