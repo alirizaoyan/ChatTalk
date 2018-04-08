@@ -9,12 +9,10 @@ var GrpMessage = require('./models/grpmessage');
 
 
 
-var io2 = require('socket.io').listen(server);
+var io = require('socket.io').listen(server);
 var db = require('./models/db');
 var passport = require('passport');
 var flash    = require('connect-flash');
-
-
 
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -59,8 +57,31 @@ require('./config/passport')(passport);
 
 var giris = require('./config/passport');
 
-io2.sockets.on('connection', function (socket) {
-    console.log("Bağlantı oluşturuldu");
+io.sockets.on('connection', function (socket) {
+
+    User.findOne({
+        email: giris.posta
+    },(err,data)=>{
+        if(err)
+            console.log(err);
+        else
+        {
+
+
+
+          if(data != null){
+              console.log("xcvdfgdg : " +data.friendsId[1]);
+              console.log("var");
+          }else{
+              console.log("yok");
+          }
+
+        }
+
+    });
+
+
+
     socket.on('yeni', function (data) {
 
         socket.nickname = giris.posta;
@@ -81,7 +102,7 @@ io2.sockets.on('connection', function (socket) {
 
         // nicknames.push(socket.nickname);
         updateNicknames();
-        // console.log(socket.nickname);
+       //  console.log(users);
     });
 
 
@@ -89,18 +110,16 @@ io2.sockets.on('connection', function (socket) {
     function updateNicknames() {
         // console.log(users);
         //  console.log(socket.nickname);
-        io2.sockets.emit('usernames', Object.keys(users));
+        io.sockets.emit('usernames', Object.keys(users));
     }
 
     socket.on('gericevrim', function (data) {
-        // console.log(data);
 
         for(i=0; i<data.length; i++){
             var isim = data[i].whom;
             var msg = data[i].message.trim();
             var nick = data[i].user;
             var time = data[i].time;
-
             msg = msg.substring(3);
             var ind = msg.indexOf(' ');
 
@@ -167,7 +186,7 @@ io2.sockets.on('connection', function (socket) {
                 callback('Error! lütfen kişisel mesaj girin.');
             }
         }else {
-            io2.sockets.emit('new message', {msg:msg, nick: socket.nickname});
+            io.sockets.emit('new message', {msg:msg, nick: socket.nickname});
 
             newMsg.user = socket.nickname;
             newMsg.message = data.mesaj;
@@ -180,7 +199,7 @@ io2.sockets.on('connection', function (socket) {
     });
 
     socket.on('grp message', (data)=>{
-        io2.to(data.name).emit('new grp message', {msg:data.mesaj, nick: socket.nickname});
+        io.to(data.name).emit('new grp message', {msg:data.mesaj, nick: socket.nickname});
 
         var newGrpMsg = new GrpMessage();
         newGrpMsg.user = socket.nickname;
@@ -201,29 +220,29 @@ io2.sockets.on('connection', function (socket) {
 
     socket.on('grpRoom', (data)=>{
         socket.join(data.name, ()=>{
-            io2.to(data.name).emit('new grp', {count: kullaniciSayisi(io2,data)});
-            io2.to(data.name).emit('new grpJoin', {name: socket.nickname});
+            io.to(data.name).emit('new grp', {count: kullaniciSayisi(io,data)});
+            io.to(data.name).emit('new grpJoin', {name: socket.nickname});
         });
     });
 
     socket.on('joinRoom', (data) => {
         socket.join(data.name, () => {
-            io2.to(data.name).emit('new join', {count: kullaniciSayisi(io2,data)});
+            io.to(data.name).emit('new join', {count: kullaniciSayisi(io,data)});
             socket.emit('log', {mesaj: 'Odaya girdiniz.'});
         });
     });
 
     socket.on('leave', (data)=>{
         socket.leave(data.name, ()=>{
-            io2.to(data.name).emit('leave room', {count: kullaniciSayisi(io,data)});
+            io.to(data.name).emit('leave room', {count: kullaniciSayisi(io,data)});
             socket.emit('socket leave', {mesaj: 'Odadan ayrıldınız.'});
         });
     });
 
     socket.on('grp leave', (data)=>{
         socket.leave(data.name, ()=>{
-            io2.to(data.name).emit('leave grpRoom', {count: kullaniciSayisi(io2,data), name: socket.nickname});
-            if(kullaniciSayisi(io2,data)=== 0){
+            io.to(data.name).emit('leave grpRoom', {count: kullaniciSayisi(io,data), name: socket.nickname});
+            if(kullaniciSayisi(io,data)=== 0){
                 socket.emit('destroy');
             }
             socket.emit('socket grpLeave', {mesaj: 'Odadan ayrıldınız.'});
@@ -255,7 +274,7 @@ io2.sockets.on('connection', function (socket) {
 // });
 
 
-const kullaniciSayisi = (io2,data) =>{
-  const room = io2.sockets.adapter.rooms[data.name];
+const kullaniciSayisi = (io,data) =>{
+  const room = io.sockets.adapter.rooms[data.name];
   return room ? room.length : 0;
 };

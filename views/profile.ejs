@@ -15,6 +15,7 @@
     <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/anasayfa" class="btn btn-default btn-sm">AnaSayfa</a>
     </div>
 
     <div class="row">
@@ -22,12 +23,24 @@
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-6">
             <div class="well">
+
+                <span class="fa fa-user"></span> Arkadaşlar</h3>
+                <p>
+                <table>
+                    <% for(var i=0; i < user.friendsId.length; i++) { %>
+                    <tr>
+                        <td><%= user.friendsId[i] %></td>
+                    </tr>
+                    <% } %>
+                </table>
+                </p>
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                 <p>
                     <strong>id</strong>: <%= user._id %><br>
                     <strong>email</strong>: <%= user.email %><br>
-                    <strong>password</strong>: <%= user.password %>
+                    <strong>password</strong>: <%= user.password %><br>
+                    <strong>friends</strong>: <%= user.friendsId %>
                 </p>
 
             </div>
@@ -36,5 +49,8 @@
     </div>
 
 </div>
+<script src="/public/js/socket.io.js"></script>
+<script type="text/javascript" src="/public/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/public/js/profile.js"></script>
 </body>
 </html>

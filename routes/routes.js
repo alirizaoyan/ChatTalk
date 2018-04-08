@@ -69,13 +69,16 @@ module.exports = function(app,  passport) {
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/anasayfa', // redirect to the secure profile section
+        successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
 
+
+    //Farklı porta yönlendirme yapabilmek için önce gelen her isteği karşılayacak bir isteğin yönlendirildiği bir kod yazılıyor.
+    //Devamında gelen parametreye göre sayfa yönlendirmeleri yapılıyor.
     app.get('*', function(req, res) {
-        console.log("req.headers : " +req.headers.host + req.url);
+        // console.log("req.headers : " +req.headers.host + req.url);
 
         if (req.url == "/goruntu")
         {
@@ -87,6 +90,10 @@ module.exports = function(app,  passport) {
             res.render('Video_Conference.ejs');
         }
 
+    });
+
+    app.get('/favicon.ico', function(req, res) {
+        res.status(204);
     });
 };
 
