@@ -55,6 +55,8 @@ module.exports = function(app,  passport) {
         });
     });
     app.get('/anasayfa', isLoggedIn, function(req, res) {
+
+        console.log("query:"+ JSON.stringify(req.query));
         res.render('ChatPage.ejs', {
             user : req.user // get the user out of session and pass to template
         });

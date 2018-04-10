@@ -25,23 +25,12 @@
             <div class="well">
 
                 <span class="fa fa-user"></span> Arkadaşlar</h3>
-                <p>
-                <table>
-                    <% for(var i=0; i < user.friendsId.length; i++) { %>
-                    <tr>
-                        <td><%= user.friendsId[i] %></td>
-                    </tr>
-                    <% } %>
-                </table>
-                </p>
-                <h3><span class="fa fa-user"></span> Local</h3>
 
-                <p>
-                    <strong>id</strong>: <%= user._id %><br>
-                    <strong>email</strong>: <%= user.email %><br>
-                    <strong>password</strong>: <%= user.password %><br>
-                    <strong>friends</strong>: <%= user.friendsId %>
-                </p>
+                <ul id="friends">
+
+                </ul>
+
+
 
             </div>
         </div>

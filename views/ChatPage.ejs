@@ -34,12 +34,16 @@
                     <div>
                         <input class="odaText" type="text" id="oda" placeholder="Oda ismi girin (Video)" style="width: 100%"><br>
                         <a  id="odaGir" style="width: 50%"
-                           onclick="javascript:open('http://localhost:3001/goruntu', 'ChatPage', 'height='+(window.innerHeight*2)/3+',width='+(window.innerWidth*2)/3+'resizable=no')">Bire Bir</a>
+                           onclick="javascript:open('http://localhost:3000/goruntu', 'ChatPage', 'height='+(window.innerHeight*2)/3+',width='+(window.innerWidth*2)/3+'resizable=no')">Bire Bir</a>
                         <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
                     </div></br>
                     <div>
-                        <a  onclick="javascript:open('http://localhost:3001/conference', 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no')" id="odaGir" style="width: 50%">Konferans</a>
+                        <a id="odaConf"  onclick="javascript:open('http://localhost:3000/conference', 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no')" id="odaGir" style="width: 50%">Konferans</a>
                     </div>
+                    <div>
+                        <a id="profil" href="/profile" onclick="" id="odaProfil" style="width: 50%">Profil</a>
+                    </div>
+
 
                 </div>
             </div>
