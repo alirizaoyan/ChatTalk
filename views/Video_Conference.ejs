@@ -29,17 +29,25 @@
 <script src="/public/js/getHTMLMediaElement.js"></script>
 
 <script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     window.enableAdapter = true; // enable adapter.js
     // ......................................................
     // .......................UI Code........................
     // ......................................................
+<<<<<<< HEAD
     document.getElementById('open-room').onclick = function() {
+=======
+    document.getElementById('open-or-join-room').onclick = function() {
+>>>>>>> origin/master
         disableInputButtons();
         connection.open(document.getElementById('room-id').value, function() {
             showRoomURL(connection.sessionid);
         });
     };
+<<<<<<< HEAD
     document.getElementById('join-room').onclick = function() {
         disableInputButtons();
         alert("joinRoom yapıldı");
@@ -58,6 +66,8 @@
 //            }
 //        });
 
+=======
+>>>>>>> origin/master
     // ......................................................
     // ..................RTCMultiConnection Code.............
     // ......................................................
@@ -81,8 +91,11 @@
         if(existing && existing.parentNode) {
             existing.parentNode.removeChild(existing);
         }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/master
         event.mediaElement.removeAttribute('src');
         event.mediaElement.removeAttribute('srcObject');
         var video = document.createElement('video');
@@ -129,6 +142,7 @@
         document.getElementById('join-room').disabled = true;
         document.getElementById('room-id').disabled = true;
     }
+<<<<<<< HEAD
     // ......................................................
     // ......................Handling Room-ID................
     // ......................................................
@@ -143,6 +157,8 @@
         roomURLsDiv.innerHTML = html;
         roomURLsDiv.style.display = 'block';
     }
+=======
+>>>>>>> origin/master
     (function() {
         var params = {},
             r = /([^&=]+)=?([^&]*)/g;
