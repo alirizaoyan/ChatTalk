@@ -56,11 +56,8 @@ app.use(ignoreFavicon);
     });
     app.get('/anasayfa', isLoggedIn, function(req, res) {
 
-<<<<<<< HEAD
        // console.log("query:"+ JSON.stringify(req.query));
-=======
         console.log("query:"+ JSON.stringify(req.query));
->>>>>>> origin/master
         res.render('ChatPage.ejs', {
             user : req.user // get the user out of session and pass to template
         });
