@@ -1,14 +1,3 @@
-// Muaz Khan      - www.MuazKhan.com
-// MIT License    - www.WebRTC-Experiment.com/licence
-// Documentation  - github.com/muaz-khan/RTCMultiConnection
-
-// to use this signaling-server.js file:
-// require('./Signaling-Server.js')(socketio_object); --- pass socket.io object
-// require('./Signaling-Server.js')(nodejs_app_object); --- pass node.js "app" object
-
-// stores all sockets, user-ids, extra-data and connected sockets
-// you can check presence as following:
-// var isRoomExist = listOfUsers['room-id'] != null;
 var listOfUsers = {};
 
 var shiftedModerationControls = {};
@@ -44,10 +33,6 @@ module.exports = exports = function(app, socketCallback) {
     } else {
         onConnection(app);
     }
-
-    // to secure your socket.io usage: (via: docs/tips-tricks.md)
-    // io.set('origins', 'https://domain.com');
-
     function appendUser(socket) {
         var alreadyExist = listOfUsers[socket.userid];
         var extra = {};
@@ -78,7 +63,218 @@ module.exports = exports = function(app, socketCallback) {
         };
     }
 
+    var Message = require('./models/message');
+    var User = require('./models/kullanici');
+    var GrpMessage = require('./models/grpmessage');
+    var users = {};
+    var giris = require('./config/passport');
+    var friends = {};
+
     function onConnection(socket) {
+
+
+
+        User.findOne({
+            email: giris.posta
+        },(err,data)=>{
+            if(err)
+                console.log(err);
+            else
+            {
+
+
+
+                if(data != null){
+                    for(var i = 0; i< data.friendsId.length; i++)
+                    {
+                        friends[i] = data.friendsId[i];
+                        User.findById(friends[i],(err, data)=>{
+                            socket.emit('friends',  data.email);
+                        });
+                    }
+                }
+                else{
+                    console.log("yok");
+                }
+
+            }
+
+        });
+
+        socket.on('vidyo', function (data) {
+            socket.emit('vidyo-konferans', data);
+
+        });
+        socket.on('profil', function (data) {
+            socket.emit('prof', data);
+
+        });
+
+        socket.on('yeni', function (data) {
+
+            socket.nickname = giris.posta;
+
+            users[socket.nickname] = socket;
+
+            Message.find({
+                whom: socket.nickname
+            }, (err,veri)=>{
+                if(err)
+                    console.log(err);
+                if(veri !== null){
+                    socket.emit('gonder', veri);
+                    //  console.log(veri);
+                }
+
+            });
+
+            // nicknames.push(socket.nickname);
+            updateNicknames();
+            //  console.log(users);
+        });
+
+
+
+        function updateNicknames() {
+            // console.log(users);
+            //  console.log(socket.nickname);
+            io.sockets.emit('usernames', Object.keys(users));
+        }
+
+        socket.on('gericevrim', function (data) {
+
+            for(i=0; i<data.length; i++){
+                var isim = data[i].whom;
+                var msg = data[i].message.trim();
+                var nick = data[i].user;
+                var time = data[i].time;
+                msg = msg.substring(3);
+                var ind = msg.indexOf(' ');
+
+                var msg = msg.substring(ind+1);
+
+                if(isim in users){
+                    users[isim].emit('message', {msg: msg, nick: nick, time: time});
+                }
+            }
+        });
+
+        socket.on('send message', function (data,callback) {
+
+            console.log(data.mesaj);
+            console.log(data.datee);
+
+            var newMsg = new Message();
+            var bosluk = "";
+
+            var msg = data.mesaj.trim();
+            if(msg.substring(0,3)=== '/w '){
+                msg = msg.substring(3);
+                var ind = msg.indexOf(' ');
+                if(ind !== -1){
+                    var name = msg.substring(0,ind);
+                    var msg = msg.substring(ind+1);
+                    if (name in users){
+                        users[name].emit('whisper', {msg:msg, nick: socket.nickname, time: data.datee});
+
+                        newMsg.user = socket.nickname;
+                        newMsg.message = data.mesaj;
+                        newMsg.whom = name;
+                        newMsg.time = data.datee;
+
+                        newMsg.save(function() {
+                            console.log(newMsg);
+                        });
+
+                        console.log('Whisper !');
+                    }else{
+
+                        User.find({
+                            email: name
+                        }, (err,veri)=>{
+                            console.log(veri);
+                            if(err)
+                                console.log(err);
+                            if(veri == bosluk){
+                                callback('Error! geçerli kullanıcı girin.');
+                            }else{
+                                newMsg.user = socket.nickname;
+                                newMsg.message = data.mesaj;
+                                newMsg.whom = name;
+                                newMsg.time = data.datee;
+
+                                newMsg.save(function() {
+                                    console.log(newMsg);
+                                });
+                                callback('Kullanıcı online olduğunda mesajınız iletilecektir.');
+                            }
+                        });
+                    }
+                }else {
+                    callback('Error! lütfen kişisel mesaj girin.');
+                }
+            }else {
+                io.sockets.emit('new message', {msg:msg, nick: socket.nickname});
+
+                newMsg.user = socket.nickname;
+                newMsg.message = data.mesaj;
+                newMsg.time = data.datee;
+
+                newMsg.save(function() {
+                    console.log(newMsg);
+                });
+            }
+        });
+
+        socket.on('grp message', (data)=>{
+            io.to(data.name).emit('new grp message', {msg:data.mesaj, nick: socket.nickname});
+
+            var newGrpMsg = new GrpMessage();
+            newGrpMsg.user = socket.nickname;
+            newGrpMsg.message = data.mesaj;
+            newGrpMsg.time = data.datee;
+            newGrpMsg.group = data.room;
+
+            newGrpMsg.save(function () {
+                console.log(newGrpMsg);
+            });
+        });
+
+
+        socket.on('grpRoom', (data)=>{
+            socket.join(data.name, ()=>{
+                io.to(data.name).emit('new grp', {count: kullaniciSayisi(io,data)});
+                io.to(data.name).emit('new grpJoin', {name: socket.nickname});
+            });
+        });
+
+        socket.on('joinRoom', (data) => {
+            socket.join(data.name, () => {
+                io.to(data.name).emit('new join', {count: kullaniciSayisi(io,data)});
+                socket.emit('log', {mesaj: 'Odaya girdiniz.'});
+            });
+        });
+
+        socket.on('leave', (data)=>{
+            socket.leave(data.name, ()=>{
+                io.to(data.name).emit('leave room', {count: kullaniciSayisi(io,data)});
+                socket.emit('socket leave', {mesaj: 'Odadan ayrıldınız.'});
+            });
+        });
+
+        socket.on('grp leave', (data)=>{
+            socket.leave(data.name, ()=>{
+                io.to(data.name).emit('leave grpRoom', {count: kullaniciSayisi(io,data), name: socket.nickname});
+                if(kullaniciSayisi(io,data)=== 0){
+                    socket.emit('destroy');
+                }
+                socket.emit('socket grpLeave', {mesaj: 'Odadan ayrıldınız.'});
+            });
+        });
+
+
+
+
         var params = socket.handshake.query;
         var socketMessageEvent = params.msgEvent || 'RTCMultiConnection-Message';
 
@@ -444,6 +640,12 @@ module.exports = exports = function(app, socketCallback) {
         });
 
         socket.on('disconnect', function() {
+
+            if(!socket.nickname) return;
+            delete users[socket.nickname];
+            updateNicknames();
+            console.log('çıkış');
+
             try {
                 if (socket && socket.namespace && socket.namespace.sockets) {
                     delete socket.namespace.sockets[this.id];
@@ -566,3 +768,8 @@ function searchCache(jsonFile, callback) {
         })(mod);
     }
 }
+
+const kullaniciSayisi = (io,data) =>{
+    const room = io.sockets.adapter.rooms[data.name];
+    return room ? room.length : 0;
+};

@@ -3,7 +3,7 @@
 module.exports = function(app,  passport) {
 
 
-
+app.use(ignoreFavicon);
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
@@ -55,6 +55,8 @@ module.exports = function(app,  passport) {
         });
     });
     app.get('/anasayfa', isLoggedIn, function(req, res) {
+
+       // console.log("query:"+ JSON.stringify(req.query));
         res.render('ChatPage.ejs', {
             user : req.user // get the user out of session and pass to template
         });
@@ -77,24 +79,26 @@ module.exports = function(app,  passport) {
 
     //Farklı porta yönlendirme yapabilmek için önce gelen her isteği karşılayacak bir isteğin yönlendirildiği bir kod yazılıyor.
     //Devamında gelen parametreye göre sayfa yönlendirmeleri yapılıyor.
+
     app.get('*', function(req, res) {
-        // console.log("req.headers : " +req.headers.host + req.url);
 
-        if (req.url == "/goruntu")
+        var gelenIstek = (req.url).slice(1,8);
+
+        console.log(gelenIstek);
+        if(gelenIstek === 'goruntu')
         {
+
             res.render('One-to-One.ejs');
-
         }
-        else if (req.url == "/conference")
+        else if(gelenIstek === "confere")
         {
+            console.log("Video Konferans çağrıldı");
             res.render('Video_Conference.ejs');
         }
 
     });
 
-    app.get('/favicon.ico', function(req, res) {
-        res.status(204);
-    });
+
 };
 
 
@@ -109,5 +113,11 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
-
+function ignoreFavicon(req, res, next) {
+    if (req.originalUrl === '/favicon.ico') {
+        res.status(204).json({nope: true});
+    } else {
+        next();
+    }
+}
 

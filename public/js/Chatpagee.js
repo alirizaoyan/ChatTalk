@@ -49,6 +49,14 @@ $(document).ready(function ()
         socket.emit('joinRoom', { name: $('#oda').val()});
     });
 
+    $('#odaConf').on('click', () => {
+        socket.emit('vidyo', { name: $('#oda').val()});
+    });
+
+    $('#odaProfil').on('click', () => {
+        socket.emit('profil', { name: $('#oda').val()});
+    });
+
     socket.on('new join', (data)=>{
         $('#bilgi').html('Bu odada <b>'+ data.count +'</b> kişi var.');
     });
