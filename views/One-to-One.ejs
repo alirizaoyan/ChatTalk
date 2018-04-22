@@ -74,6 +74,8 @@
 
     <script>
 
+
+
             document.getElementById('open-or-join-room').onclick = function () {
                 disableInputButtons();
                 connection.openOrJoin(document.getElementById('room-id').value);
@@ -147,6 +149,9 @@
             })();
 
             var roomid = '';
+
+
+
             if (localStorage.getItem(connection.socketMessageEvent)) {
                 roomid = localStorage.getItem(connection.socketMessageEvent);
 
@@ -155,10 +160,9 @@
 
                 $(document).ready(function () {
 
-                var str = (window.location.pathname).slice(9);
-                roomid = str;
-                document.getElementById("open-or-join-room").click();
-
+                    var str = (window.location.pathname).slice(9);
+                    roomid = str;
+                    document.getElementById("open-or-join-room").click();
                 });
             }
             document.getElementById('room-id').value = roomid;

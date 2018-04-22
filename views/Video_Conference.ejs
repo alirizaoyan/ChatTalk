@@ -1,3 +1,5 @@
+<!-- Demo version: 2017.12.13 -->
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -5,16 +7,23 @@
     <title>Video Conferencing using RTCMultiConnection</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="/public/stylesheets/stylesheet.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+<style>
+    .btn{
+        display: none;
+    }
+</style>
+
 
 <section class="make-center">
     <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
-    <button id="open-room">Open Room</button>
-    <button id="join-room">Join Room</button>
-    <!--<button id="open-or-join-room">Auto Open Or Join Room</button>-->
+    <button class="btn"  id="open-room">Open Room</button>
+    <button style="display: none;" id="join-room">Join Room</button>
+    <button id="open-or-join-room">Auto Open Or Join Room</button>
 
-    <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
+    <!--<div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>-->
 
     <div id="videos-container"></div>
 </section>
@@ -23,51 +32,32 @@
 <script src="/public/js/adapter.js"></script>
 <script src="/public/js/socket.io.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- custom layout for HTML5 audio/video elements -->
-<link rel="stylesheet" href="/public/stylesheets//getHTMLMediaElement.css">
+<link rel="stylesheet" href="/public/stylesheets/getHTMLMediaElement.css">
 <script src="/public/js/getHTMLMediaElement.js"></script>
-
 <script>
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
     window.enableAdapter = true; // enable adapter.js
     // ......................................................
     // .......................UI Code........................
     // ......................................................
-<<<<<<< HEAD
     document.getElementById('open-room').onclick = function() {
-=======
-    document.getElementById('open-or-join-room').onclick = function() {
->>>>>>> origin/master
         disableInputButtons();
         connection.open(document.getElementById('room-id').value, function() {
-            showRoomURL(connection.sessionid);
+            //showRoomURL(connection.sessionid);
         });
     };
-<<<<<<< HEAD
     document.getElementById('join-room').onclick = function() {
         disableInputButtons();
-        alert("joinRoom yapıldı");
         connection.join(document.getElementById('room-id').value);
     };
-
-//    document.getElementById('open-or-join-room').onclick = function() {
-//        disableInputButtons();
-//    };
-
-
-//        connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
-//            if (!isRoomExist) {
-//                showRoomURL(roomid);
-//                alert("roomid : " + roomid);
-//            }
-//        });
-
-=======
->>>>>>> origin/master
+    document.getElementById('open-or-join-room').onclick = function() {
+        disableInputButtons();
+        connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
+            if (!isRoomExist) {
+                //showRoomURL(roomid);
+            }
+        });
+    };
     // ......................................................
     // ..................RTCMultiConnection Code.............
     // ......................................................
@@ -91,11 +81,6 @@
         if(existing && existing.parentNode) {
             existing.parentNode.removeChild(existing);
         }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/master
         event.mediaElement.removeAttribute('src');
         event.mediaElement.removeAttribute('srcObject');
         var video = document.createElement('video');
@@ -126,7 +111,6 @@
     connection.onMediaError = function(e) {
         if (e.message === 'Concurrent mic process limit.') {
             if (DetectRTC.audioInputDevices.length <= 1) {
-                alert('Please select external microphone. Check github issue number 483.');
                 return;
             }
             var secondaryMic = DetectRTC.audioInputDevices[1].deviceId;
@@ -142,23 +126,20 @@
         document.getElementById('join-room').disabled = true;
         document.getElementById('room-id').disabled = true;
     }
-<<<<<<< HEAD
     // ......................................................
     // ......................Handling Room-ID................
     // ......................................................
-    function showRoomURL(roomid) {
-        var roomHashURL = '#' + roomid;
-        var roomQueryStringURL = '?roomid=' + roomid;
-        var html = '<h2>Unique URL for your room:</h2><br>';
-        html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
-        html += '<br>';
-        html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
-        var roomURLsDiv = document.getElementById('room-urls');
-        roomURLsDiv.innerHTML = html;
-        roomURLsDiv.style.display = 'block';
-    }
-=======
->>>>>>> origin/master
+//    function showRoomURL(roomid) {
+//        var roomHashURL = '#' + roomid;
+//        var roomQueryStringURL = '?roomid=' + roomid;
+//        var html = '<h2>Unique URL for your room:</h2><br>';
+//        html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
+//        html += '<br>';
+//        html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
+//        var roomURLsDiv = document.getElementById('room-urls');
+//        roomURLsDiv.innerHTML = html;
+//        roomURLsDiv.style.display = 'block';
+//    }
     (function() {
         var params = {},
             r = /([^&=]+)=?([^&]*)/g;
@@ -172,7 +153,6 @@
     })();
     var roomid = '';
     if (localStorage.getItem(connection.socketMessageEvent)) {
-        //roomid = localStorage.getItem(connection.socketMessageEvent);
         $(document).ready(function () {
 
             //Eğer herhangi bir oda oluşturulmamışsa ilk olarak bu if'in içine düşer. O yüzden oda açma butonu burada çalıştırılacak.
@@ -182,25 +162,27 @@
             //Ardından otomatik olarak open-room butonuna click yaparız.
             var str = (window.location.pathname).slice(12);
             roomid = str;
-            document.getElementById("open-room").click();
+
+            document.getElementById("open-or-join-room").click();
         });
-    }
-    else
-    {
-        //roomid = connection.token();
-        //Eğer herhangi bir oda oluşturulmuşsa bu else'e düşer. O yüzden odaya katılma butonu burada çalıştırılacak.
-        //window.location.pathname ile url'de / tan sonraki değer alınır. slice(12) diyerek ilk 12 karakter alınır. Yani conference! yazısından
-        //sonraki değerdir bu. ? değil ! koydum. Çünkü soru işareti koyunca kendisinden sonraki değeri görmüyor. & işareti de aynı şekilde.
-        //url'e yazdığımız bu değer, ChatPage.ejs'den gelen ve bizim elle girdiğimiz oda değeridir.
-        //Ardından otomatik olarak join-room butonuna click yaparız.
+        roomid = localStorage.getItem(connection.socketMessageEvent);
+        roomid = str;
+
+    } else {
         $(document).ready(function () {
 
+            //Eğer herhangi bir oda oluşturulmamışsa ilk olarak bu if'in içine düşer. O yüzden oda açma butonu burada çalıştırılacak.
+            //window.location.pathname ile url'de / tan sonraki değer alınır. slice(12) diyerek ilk 12 karakter alınır. Yani conference! yazısından
+            //sonraki değerdir bu. ? değil ! koydum. Çünkü soru işareti koyunca kendisinden sonraki değeri görmüyor. & işareti de aynı şekilde.
+            //url'e yazdığımız bu değer, ChatPage.ejs'den gelen ve bizim elle girdiğimiz oda değeridir.
+            //Ardından otomatik olarak open-room butonuna click yaparız.
             var str = (window.location.pathname).slice(12);
             roomid = str;
-                document.getElementById("join-room").click();
 
-
+            document.getElementById("open-or-join-room").click();
         });
+        roomid = connection.token();
+        roomid = str;
 
     }
     document.getElementById('room-id').value = roomid;
@@ -223,6 +205,7 @@
             connection.checkPresence(roomid, function(isRoomExist) {
                 if (isRoomExist) {
                     connection.join(roomid);
+
                     return;
                 }
                 setTimeout(reCheckRoomPresence, 5000);
@@ -231,17 +214,12 @@
         disableInputButtons();
     }
 </script>
+
 <script>
-    $('#open-room').click(function() {
+    $('#open-or-join-room').click(function() {
         $('.make-center').hide();
     });
-    $('#join-room').click(function() {
-        $('.make-center').hide();
-    });
-
 </script>
-
-
 <script src="https://cdn.webrtc-experiment.com/common.js"></script>
 </body>
 </html>

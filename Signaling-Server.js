@@ -159,6 +159,7 @@ module.exports = exports = function(app, socketCallback) {
             }
         });
 
+
         socket.on('send message', function (data,callback) {
 
             console.log(data.mesaj);
@@ -167,9 +168,11 @@ module.exports = exports = function(app, socketCallback) {
             var newMsg = new Message();
             var bosluk = "";
 
+
+
             var msg = data.mesaj.trim();
-            if(msg.substring(0,3)=== '/w '){
-                msg = msg.substring(3);
+            if(msg.substring(0,1)=== '@'){
+                msg = msg.substring(1);
                 var ind = msg.indexOf(' ');
                 if(ind !== -1){
                     var name = msg.substring(0,ind);
@@ -254,6 +257,9 @@ module.exports = exports = function(app, socketCallback) {
                 socket.emit('log', {mesaj: 'Odaya girdiniz.'});
             });
         });
+
+
+
 
         socket.on('leave', (data)=>{
             socket.leave(data.name, ()=>{

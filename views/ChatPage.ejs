@@ -33,38 +33,26 @@
                         <button id="grp-odaCik" style="width: 50%; display: none" class="sag" onclick="grpOdaCikis()">Çıkış</button>
                     </div></br>
                     <div>
+
+                        <input class="odaText" type="text" id="kisi" placeholder="Kişi ismi girin" style="width: 100%"><br>
+
                         <input class="odaText" type="text" id="oda" placeholder="Oda ismi girin (Video)" style="width: 100%"><br>
-<<<<<<< HEAD
-                        <a  id="odaGir" style="width: 50%" href="javascript:
+                        <a  id="odaGir" style="width: 50%" target="_blank" href="javascript:
                         var odaID = $('#oda').val();
                         var str = 'http://localhost:3000/goruntu!' + odaID;
-                        open(str, 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no')
+                        open(str)
                         ">Bire Bir</a>
-                        <!--<a id="oda"  onclick="javascript:open('http://localhost:3000/goruntu', 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no')" id="odaGir" style="width: 50%">Bire Bir</a>-->
-
-                        <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
-                    </div></br>
-                    <div>
-                        <a  id="odaGir" style="width: 50%" href="javascript:
+                        <!--, 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no'-->
+                        <a  id="odaConfGir" style="width: 50%" target="_blank" href="javascript:
                         var odaID = $('#oda').val();
                         var str = 'http://localhost:3000/conference!' + odaID;
-                        open(str, 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no')
+                        open(str)
                         ">Video Konferans</a>
-                    </div>
-                    <div>
-                        <a id="profil" href="/profile" onclick="" id="odaProfil" style="width: 50%">Profil</a>
-=======
-                        <a  id="odaGir" style="width: 50%"
-                           onclick="javascript:open('http://localhost:3000/goruntu', 'ChatPage', 'height='+(window.innerHeight*2)/3+',width='+(window.innerWidth*2)/3+'resizable=no')">Bire Bir</a>
                         <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
-                    </div></br>
-                    <div>
-                        <a id="odaConf"  onclick="javascript:open('http://localhost:3000/conference', 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no')" id="odaGir" style="width: 50%">Konferans</a>
->>>>>>> origin/master
                     </div>
-                    <div>
-                        <a id="profil" href="/profile" onclick="" id="odaProfil" style="width: 50%">Profil</a>
-                    </div>
+
+
+
 
 
 
@@ -80,10 +68,13 @@
                         <ul id="mesajlar" class="chat">
 
                         </ul>
+
+                        <p id="demo"></p>
                     </div>
                     <div class="panel-footer">
                         <form id="send-message">
                             <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın" id="mesaj">
+                            <input type="submit" value="Mesaj Gönder" id="ozelMsgGonder" style="display: none;">
                         </form>
                     </div>
                 </div>
@@ -101,8 +92,11 @@
                     </div>
                     <div class="panel-footer">
                         <form id="grp-send-message">
+
                             <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın" id="grp-mesaj">
+
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -124,6 +118,8 @@
         </div>
     </div>
         <script>
+
+
             function odaGiris() {
                 document.getElementById("livechat-container").hidden =true;
                 document.getElementById("video").hidden =false;

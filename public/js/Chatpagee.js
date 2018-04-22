@@ -3,6 +3,18 @@ $(document).ready(function ()
 {
     var socket = io.connect();
 
+
+    //Oda id'sini random verme
+    var dizi='';
+    var dizi2=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','r','s','t','u','v','x','y','z'];
+    for(var i = 0;i<8;i++)
+    {
+        dizi +=Math.floor(Math.random() * Math.floor(9));
+        dizi +=(dizi2[Math.floor(Math.random() * Math.floor(22))]);
+    }
+    $('#oda').val(dizi);
+
+
     var $messageForm = $('#send-message');
     var $messageBox = $('#mesaj');
     var $chat = $('#mesajlar');
@@ -45,9 +57,65 @@ $(document).ready(function ()
        $('#grp-mesajlar').append(data.name+ ' kişisi katıldı.</br>');
     });
 
-    $('#odaGir').on('click', () => {
-        socket.emit('joinRoom', { name: $('#oda').val()});
+
+    $('#odaGir').click(function () {
+
+        birebirGorusme();
+
+
     });
+
+    $('#odaConfGir').click(function () {
+
+        konferansGorusme();
+
+
+    });
+
+    function birebirGorusme() {
+        var kisi = $('#kisi').val();
+        var odaID = $('#oda').val();
+        var str = 'http://localhost:3000/goruntu!' + odaID;
+
+       var link = "<a  href='" +str+ "' target='_blank'>  isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
+        var mesajj = "@" + kisi + " " + link ;
+        $('#mesaj').val(mesajj);
+
+        document.getElementById('ozelMsgGonder').click();
+        $('#kisi').val("");
+        odaID.hide();
+    }
+
+    function konferansGorusme() {
+        var kisiler = $('#kisi').val();
+
+        var odaID = $('#oda').val();
+        var str = 'http://localhost:3000/conference!' + odaID;
+
+        var b = [], k = [], n = [];
+        var sayac = (kisiler.match(/,/g) || []).length;
+        kisiler += ",";
+        for (var i = 0; i <= sayac; i++) {
+            n[i] = kisiler.indexOf(",");
+            k[i] = kisiler.substring(0, n[i]);
+            b[i] = kisiler.substring(0, n[i] + 1);
+            kisiler = kisiler.replace(b[i], "");
+            //$("#demo").append(k[i]);
+
+            var link = "<a  href='" + str + "' target='_blank'> görüntülü görüşme isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
+            var mesajj = "@" + k[i] + " " + link;
+            $('#mesaj').val(mesajj);
+
+            document.getElementById('ozelMsgGonder').click();
+            $('#kisi').val("");
+        }
+
+
+
+
+        odaID.hide();
+    }
+
 
     $('#odaConf').on('click', () => {
         socket.emit('vidyo', { name: $('#oda').val()});
@@ -56,6 +124,7 @@ $(document).ready(function ()
     $('#odaProfil').on('click', () => {
         socket.emit('profil', { name: $('#oda').val()});
     });
+
 
     socket.on('new join', (data)=>{
         $('#bilgi').html('Bu odada <b>'+ data.count +'</b> kişi var.');
@@ -74,7 +143,7 @@ $(document).ready(function ()
 
     socket.on('message', function (data) {
         $chat.append('<div>' +
-            '<li  class="left clearfix">'+
+            '<li id="msgID" class="left clearfix">'+
             '<div class="chat-body clearfix">'+
             '<div class="header"><strong class="primary-font" style="color: black">'+ data.nick+" (Çevrimdışı Gelen)"+'</strong><span class="sag">'+ data.time +'</span> '+
             '</div>' +data.msg+'</div></li></div>');
@@ -87,6 +156,7 @@ $(document).ready(function ()
         grpOdaGir.removeAttribute("disabled");
         $('#odaCik').hide();
     });
+
 
     $('#odaCik').on('click', ()=>{
        socket.emit('leave', {name: $('#oda').val()});
@@ -161,6 +231,9 @@ $(document).ready(function ()
             '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" (Özel)"+'</strong><span class="sag">'+ data.time +'</span> '+
             '</div>' +data.msg+'</div></li></div>');
     });
+    // socket.on('dataKisiName', function (data) {
+    //     alert("Merhaba");
+    // })
 
     socket.on('usernames', function (data) {
 
