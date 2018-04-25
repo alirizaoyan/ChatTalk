@@ -37,7 +37,11 @@
                         <input class="odaText" type="text" id="kisi" placeholder="Kişi ismi girin" style="width: 100%"><br>
 
                         <input class="odaText" type="text" id="oda" placeholder="Oda ismi girin (Video)" style="width: 100%"><br>
+<<<<<<< HEAD
                         <a  id="odaGir" style="width: 50%" target="_blank" href="javascript:
+=======
+                        <a  id="odaGir" style="width: 50%" href="javascript:
+>>>>>>> origin/master
                         var odaID = $('#oda').val();
                         var str = 'http://localhost:3000/goruntu!' + odaID;
                         open(str)
@@ -48,7 +52,22 @@
                         var str = 'http://localhost:3000/conference!' + odaID;
                         open(str)
                         ">Video Konferans</a>
+<<<<<<< HEAD
                         <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
+=======
+                    </div>
+                    <div>
+                        <a id="profil" href="/profile" onclick="" id="odaProfil" style="width: 50%">Profil</a>
+                        <a  id="odaGir" style="width: 50%"
+                           onclick="javascript:open('http://localhost:3000/goruntu', 'ChatPage', 'height='+(window.innerHeight*2)/3+',width='+(window.innerWidth*2)/3+'resizable=no')">Bire Bir</a>
+                        <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
+                    </div></br>
+                    <div>
+                        <a id="odaConf"  onclick="javascript:open('http://localhost:3000/conference', 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no')" id="odaGir" style="width: 50%">Konferans</a>
+                    </div>
+                    <div>
+                        <a id="profil" href="/profile" onclick="" id="odaProfil" style="width: 50%">Profil</a>
+>>>>>>> origin/master
                     </div>
 
 
