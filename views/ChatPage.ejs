@@ -1,169 +1,144 @@
 <html>
-    <head>
-        <title>Chat & Talk</title>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/public/stylesheets/main.css">
+<head>
+    <title>Chat & Talk</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/stylesheets/main.css">
 
-    </head>
+</head>
 
-    <style>
-        .error{
-            color: red;
-        }
-        .whisper{
-            color: gray;
-            font-style: italic;
-        }
-    </style>
+<style>
+    .error{
+        color: red;
+    }
+    .whisper{
+        color: gray;
+        font-style: italic;
+    }
+</style>
 
-    <body>
-    <div id="app">
-            <div class="col-md-2 userlist">
-                <div class="panel-heading" id="bagliKullanici">
+<body>
+<div id="app" style="padding-top: 1%">
+    <div style="width: 20%; height: 101%;float: left;padding-left: 1%">
+        <div class="userlist panel panel-primary" >
+            <div class="panel-heading" id="bagliKullanici">
+            </div>
+            <ul class="panel-body user" id="users">
 
-                </div>
-                <ul class="panel-body user" id="users">
+            </ul>
+            <div class="panel-footer" style="background: none">
+                <div>
+                    <div class="form-group" >
+                        <input type="text" class="form-control odaText" id="grp-oda" placeholder="Oda ismi girin (Sohbet)">
+                    </div>
+                    <button class="btn btn-primary" id="grp-odaGir" style="width: 49%; float:left" onclick="grpOdaGiris()">Giriş</button>
+                    <button class="btn btn-primary" id="grp-odaCik" style="width: 49%; float:right; display: none" onclick="grpOdaCikis()">Çıkış</button>
+                </div></br>
+                <div id="bottom-bar" >
+                    <div class="form-group" >
+                        <input type="text" class="form-control" id="kisi" placeholder="Kişi ismi girin">
+                        <input type="text" class="form-control" id="oda" placeholder="Oda ismi girin (Video)">
+                    </div>
 
-                </ul>
-                <div class="panel-footer" style="background-color: white">
-                    <div>
-                        <input class="odaText" type="text" id="grp-oda" placeholder="Oda ismi girin (Sohbet)" style="width: 100%"><br>
-                        <button id="grp-odaGir" style="width: 50%" onclick="grpOdaGiris()">Giriş</button>
-                        <button id="grp-odaCik" style="width: 50%; display: none" class="sag" onclick="grpOdaCikis()">Çıkış</button>
-                    </div></br>
-                    <div>
-
-                        <input class="odaText" type="text" id="kisi" placeholder="Kişi ismi girin" style="width: 100%"><br>
-
-                        <input class="odaText" type="text" id="oda" placeholder="Oda ismi girin (Video)" style="width: 100%"><br>
-<<<<<<< HEAD
-                        <a  id="odaGir" style="width: 50%" target="_blank" href="javascript:
-=======
-                        <a  id="odaGir" style="width: 50%" href="javascript:
->>>>>>> origin/master
+                    <a  id="odaGir" style="width: 50%" target="_blank" href="javascript:
                         var odaID = $('#oda').val();
                         var str = 'http://localhost:3000/goruntu!' + odaID;
                         open(str)
-                        ">Bire Bir</a>
-                        <!--, 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no'-->
-                        <a  id="odaConfGir" style="width: 50%" target="_blank" href="javascript:
+                        "><i class="fa fa-user" aria-hidden="true"></i> <span>Bire Bir Görüşme</span></a>
+                    <a  id="odaConfGir" style="width: 50%" target="_blank" href="javascript:
                         var odaID = $('#oda').val();
                         var str = 'http://localhost:3000/conference!' + odaID;
                         open(str)
-                        ">Video Konferans</a>
-<<<<<<< HEAD
-                        <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
-=======
-                    </div>
-                    <div>
-                        <a id="profil" href="/profile" onclick="" id="odaProfil" style="width: 50%">Profil</a>
-                        <a  id="odaGir" style="width: 50%"
-                           onclick="javascript:open('http://localhost:3000/goruntu', 'ChatPage', 'height='+(window.innerHeight*2)/3+',width='+(window.innerWidth*2)/3+'resizable=no')">Bire Bir</a>
-                        <button id="odaCik" style="width: 50%; display: none" class="sag" onclick="odaCikis()">Çıkış</button>
-                    </div></br>
-                    <div>
-                        <a id="odaConf"  onclick="javascript:open('http://localhost:3000/conference', 'ChatPage', 'height='+window.innerHeight+',width='+window.innerWidth+'resizable=no')" id="odaGir" style="width: 50%">Konferans</a>
-                    </div>
-                    <div>
-                        <a id="profil" href="/profile" onclick="" id="odaProfil" style="width: 50%">Profil</a>
->>>>>>> origin/master
-                    </div>
-
-
-
-
-
-
-                </div>
-            </div>
-        <div class="col-md-10">
-            <div id="livechat-container">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        Lets Chat
-                    </div>
-                    <div class="panel-body mesaj" id="panel">
-                        <ul id="mesajlar" class="chat">
-
-                        </ul>
-
-                        <p id="demo"></p>
-                    </div>
-                    <div class="panel-footer">
-                        <form id="send-message">
-                            <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın" id="mesaj">
-                            <input type="submit" value="Mesaj Gönder" id="ozelMsgGonder" style="display: none;">
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div id="grp-chat" hidden>
-                <div class="panel panel-primary">
-                    <div class="panel-heading" id="sayi">
-                        Group
-                    </div>
-                    <div class="panel-body mesaj" id="grp-panel">
-                        <ul id="grp-mesajlar" class="chat">
-
-                        </ul>
-                    </div>
-                    <div class="panel-footer">
-                        <form id="grp-send-message">
-
-                            <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın" id="grp-mesaj">
-
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-
-            <div id="video" hidden>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        Lets Talk
-                    </div>
-                    <div class="panel-body video">
-
-
-                    </div>
-                    <div class="panel-footer" id="bilgi">
-
-                    </div>
+                        "><i class="fa fa-group" aria-hidden="true"></i> <span>Video Konferans</span></a>
                 </div>
             </div>
         </div>
     </div>
-        <script>
+
+    <div style="width: 78%;height: 100%; float: right; padding-right: 1%;">
+        <div id="livechat-container">
+            <div class="panel panel-primary">
+                <div id="kisiAdi" class="panel-heading">
+
+                </div>
+                <div class="panel-body mesaj" id="panel">
+                    <ul id="mesajlar" class="chat">
+                    </ul>
+                </div>
+                <div class="panel-footer" style="background: transparent">
+                    <form id="send-message">
+                        <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın" id="mesaj">
+                        <input type="submit" value="Mesaj Gönder" id="ozelMsgGonder" style="display: none;">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="grp-chat" hidden>
+            <div class="panel panel-primary">
+                <div class="panel-heading" id="sayi">
+                    Group
+                </div>
+                <div class="panel-body mesaj" id="grp-panel">
+                    <ul id="grp-mesajlar" class="chat">
+
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <form id="grp-send-message">
+
+                        <input type="text" class="form-control input-group-lg" placeholder="Mesajınızı yazın" id="grp-mesaj">
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="video" hidden>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Lets Talk
+                </div>
+                <div class="panel-body video">
 
 
-            function odaGiris() {
-                document.getElementById("livechat-container").hidden =true;
-                document.getElementById("video").hidden =false;
-                document.getElementById("grp-chat").hidden =true;
-            }
-            function odaCikis() {
-                document.getElementById("livechat-container").hidden =false;
-                document.getElementById("video").hidden =true;
-                document.getElementById("grp-chat").hidden =true;
-            }
-            function grpOdaGiris() {
-                document.getElementById("livechat-container").hidden =true;
-                document.getElementById("video").hidden =true;
-                document.getElementById("grp-chat").hidden =false;
-            }
-            function grpOdaCikis() {
-                document.getElementById("livechat-container").hidden =false;
-                document.getElementById("video").hidden =true;
-                document.getElementById("grp-chat").hidden =true;
-            }
+                </div>
+                <div class="panel-footer" id="bilgi">
 
-        </script>
-        <script src="/public/js/socket.io.js"></script>
-        <script type="text/javascript" src="/public/js/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="/public/js/Chatpagee.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    </body>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    function odaGiris() {
+        document.getElementById("livechat-container").hidden =true;
+        document.getElementById("video").hidden =false;
+        document.getElementById("grp-chat").hidden =true;
+    }
+    function odaCikis() {
+        document.getElementById("livechat-container").hidden =false;
+        document.getElementById("video").hidden =true;
+        document.getElementById("grp-chat").hidden =true;
+    }
+    function grpOdaGiris() {
+        document.getElementById("livechat-container").hidden =true;
+        document.getElementById("video").hidden =true;
+        document.getElementById("grp-chat").hidden =false;
+    }
+    function grpOdaCikis() {
+        document.getElementById("livechat-container").hidden =false;
+        document.getElementById("video").hidden =true;
+        document.getElementById("grp-chat").hidden =true;
+    }
+
+</script>
+<script src="/public/js/socket.io.js"></script>
+<script type="text/javascript" src="/public/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/public/js/Chatpagee.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
 </html>

@@ -22,6 +22,7 @@ $(document).ready(function ()
     var $kisiSayisi = $('#bagliKullanici');
     var oda = document.getElementById("oda");
     var odaGir = document.getElementById("odaGir");
+    var kisiAdi = $('#kisiAdi');
 
     var $grpMessageForm = $('#grp-send-message');
     var $grpMessageBox = $('#grp-mesaj');
@@ -43,18 +44,18 @@ $(document).ready(function ()
     }
 
     $('#grp-odaGir').on('click', () => {
-       socket.emit('grpRoom', {name: $('#grp-oda').val()});
+        socket.emit('grpRoom', {name: $('#grp-oda').val()});
     });
 
     socket.on('new grp', (data)=>{
-        $('#sayi').html('Group Chat'+'<span class="sag">'+'Odada '+data.count+' kişi var.'+'</span>');
+        $('#sayi').html('Sohbet Odası'+'<span class="sag">'+'Odada '+data.count+' kişi var.'+'</span>');
         $('#oda, #odaGir').attr('disabled','disabled');
         $('#grp-oda, #grp-odaGir').attr('disabled','disabled');
         $('#grp-odaCik').show();
     });
 
     socket.on('new grpJoin', (data)=>{
-       $('#grp-mesajlar').append(data.name+ ' kişisi katıldı.</br>');
+        $('#grp-mesajlar').append(data.name+ ' kişisi katıldı.</br>');
     });
 
 
@@ -77,7 +78,7 @@ $(document).ready(function ()
         var odaID = $('#oda').val();
         var str = 'http://localhost:3000/goruntu!' + odaID;
 
-       var link = "<a  href='" +str+ "' target='_blank'>  isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
+        var link = "<a  href='" +str+ "' target='_blank'>  isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
         var mesajj = "@" + kisi + " " + link ;
         $('#mesaj').val(mesajj);
 
@@ -105,14 +106,9 @@ $(document).ready(function ()
             var link = "<a  href='" + str + "' target='_blank'> görüntülü görüşme isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
             var mesajj = "@" + k[i] + " " + link;
             $('#mesaj').val(mesajj);
-
             document.getElementById('ozelMsgGonder').click();
             $('#kisi').val("");
         }
-
-
-
-
         odaID.hide();
     }
 
@@ -138,7 +134,7 @@ $(document).ready(function ()
     });
 
     socket.on('gonder', function (data) {
-       socket.emit('gericevrim', data);
+        socket.emit('gericevrim', data);
     });
 
     socket.on('message', function (data) {
@@ -159,7 +155,7 @@ $(document).ready(function ()
 
 
     $('#odaCik').on('click', ()=>{
-       socket.emit('leave', {name: $('#oda').val()});
+        socket.emit('leave', {name: $('#oda').val()});
     });
 
     socket.on('leave room', (data)=>{
@@ -167,11 +163,11 @@ $(document).ready(function ()
     });
 
     $('#grp-odaCik').on('click', ()=>{
-       socket.emit('grp leave', {name: $('#grp-oda').val()});
+        socket.emit('grp leave', {name: $('#grp-oda').val()});
     });
 
     socket.on('leave grpRoom', (data)=>{
-        $('#sayi').html('Group Chat'+'<span class="sag">'+'Odada '+data.count+' kişi var.'+'</span>');
+        $('#sayi').html('Sohbet Odası'+'<span class="sag">'+'Odada '+data.count+' kişi var.'+'</span>');
         $('#grp-mesajlar').append(data.name+ ' kişisi çıktı.</br>');
     });
 
@@ -231,20 +227,29 @@ $(document).ready(function ()
             '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" (Özel)"+'</strong><span class="sag">'+ data.time +'</span> '+
             '</div>' +data.msg+'</div></li></div>');
     });
-    // socket.on('dataKisiName', function (data) {
-    //     alert("Merhaba");
-    // })
+
+    socket.on('whisper-back', function (data) {
+        $chat.append('<div>' +
+            '<li  class="left clearfix">'+
+            '<div class="chat-body clearfix">'+
+            '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" ("+data.name+")"+'</strong><span class="sag">'+ data.time +'</span> '+
+            '</div>' +data.msg+'</div></li></div>');
+    });
 
     socket.on('usernames', function (data) {
 
-        $kisiSayisi.html('<i class="glyphicon glyphicon-user"></i> Online (' + data.length +')');
+        $kisiSayisi.html('<i class="glyphicon glyphicon-user"></i> Çevrimiçi (' + data.length +')');
 
         var html ='';
         for(i=0; i<data.length; i++){
-            html += data[i]+ '</br>';
+            html+='<b><font face="verdana" color="#337ab7">' + data[i]+ '</font></b></br>';
             $users.html(html);
         }
         document.getElementById("users").scrollTop = document.getElementById("users").scrollHeight;
+    });
+
+    socket.on('kisi', function (data) {
+        kisiAdi.html('Genel Sohbet ('+ data+')'+'<a href="/logout" class="btn btn-danger btn-xs" style="float: right">Çıkış</a>');
     });
 
 });

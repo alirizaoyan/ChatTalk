@@ -1,47 +1,99 @@
-<!-- views/signup.ejs -->
-<!doctype html>
 <html>
 <head>
-    <title>Node Authentication</title>
+    <title>Chat & Talk</title>
+
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href=/fonts/iconic/css/material-design-iconic-font.css">
+    <link rel="stylesheet" type="text/css" href=/public/stylesheets/animate.css>
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/utilLogin.css">
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/mainLogin.css">
     <style>
         body        { padding-top:80px; }
     </style>
 </head>
 <body>
-<div class="container">
 
-    <div class="col-sm-6 col-sm-offset-3">
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('/public/images/bg-01.jpg');">
+        <div class="wrap-login100">
 
-        <h1><span class="fa fa-sign-in"></span> Signup</h1>
 
-        <!-- show any messages that come back with authentication -->
-        <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-        <% } %>
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+            <% } %>
 
-        <!-- LOGIN FORM -->
-        <form action="/signup" method="post">
-            <div class="form-group">
-                <label>Email</label>
-                <input type="text" class="form-control" name="email">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" name="password">
-            </div>
+            <!-- LOGIN FORM -->
+            <form action="/" method="post" id="setNick">
 
-            <button type="submit" class="btn btn-warning btn-lg">Signup</button>
-        </form>
+            <span class="login100-form-logo">
+                            <i class="zmdi zmdi-landscape"></i>
+							<img src="/public/images/amblem.png">
+                        </span>
 
-        <hr>
+                <span class="login100-form-title p-b-34 p-t-27">
+                           Chat & Talk
+                        </span>
 
-        <p>Already have an account? <a href="/login">Login</a></p>
-        <p>Or go <a href="/">home</a>.</p>
+                <div class="form-group" >
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
 
+
+                        <input class="input100 form-control" type="text" name="email" placeholder="Kullanıcı adı">
+
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+                        <input class="input100 form-control" type="password" name="password" placeholder="Parola">
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+                        <input class="input100 form-control" type="password" name="password" placeholder="Parolayı tekrar girin">
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" type="submit">
+                        Kayıt Ol
+                    </button>
+                    &nbsp;&nbsp;
+
+                    <a class="login100-form-btn"  href="/login">Zaten bir hesabınız var mı? </a>
+
+                </div>
+
+
+
+            </form>
+
+
+
+        </div>
     </div>
-
 </div>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/public/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="/public/js/popper.js"></script>
+<script src="/public/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/public/js/select2.min.js"></script>
+<!--===============================================================================================-->
+<script src="/public/js/countdowntime.js"></script>
+<!--===============================================================================================-->
+<script src="/public/js/main.js"></script>
+
 </body>
 </html>
+
+
+

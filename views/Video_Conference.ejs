@@ -7,6 +7,8 @@
     <title>Video Conferencing using RTCMultiConnection</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="/public/stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/stylesheets/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
@@ -18,14 +20,20 @@
 
 
 <section class="make-center">
-    <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
-    <button class="btn"  id="open-room">Open Room</button>
-    <button style="display: none;" id="join-room">Join Room</button>
-    <button id="open-or-join-room">Auto Open Or Join Room</button>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Video Konferans
+        </div>
+        <input hidden="hidden" type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
+        <button class="btn"  id="open-room">Open Room</button>
+        <button style="display: none;" id="join-room">Join Room</button>
+        <button id="open-or-join-room"></button>
 
-    <!--<div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>-->
+        <!--<div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>-->
 
-    <div id="videos-container"></div>
+        <div id="videos-container"></div>
+    </div>
+
 </section>
 
 <script src="/public/js/RTCMultiConnection.js"></script>
@@ -36,19 +44,11 @@
 <link rel="stylesheet" href="/public/stylesheets/getHTMLMediaElement.css">
 <script src="/public/js/getHTMLMediaElement.js"></script>
 <script>
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
     window.enableAdapter = true; // enable adapter.js
     // ......................................................
     // .......................UI Code........................
     // ......................................................
     document.getElementById('open-room').onclick = function() {
-<<<<<<< HEAD
-=======
-    document.getElementById('open-or-join-room').onclick = function() {
->>>>>>> origin/master
         disableInputButtons();
         connection.open(document.getElementById('room-id').value, function() {
             //showRoomURL(connection.sessionid);
@@ -58,7 +58,6 @@
         disableInputButtons();
         connection.join(document.getElementById('room-id').value);
     };
-<<<<<<< HEAD
     document.getElementById('open-or-join-room').onclick = function() {
         disableInputButtons();
         connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
@@ -67,21 +66,6 @@
             }
         });
     };
-=======
-
-//    document.getElementById('open-or-join-room').onclick = function() {
-//        disableInputButtons();
-//    };
-
-
-//        connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
-//            if (!isRoomExist) {
-//                showRoomURL(roomid);
-//                alert("roomid : " + roomid);
-//            }
-//        });
-
->>>>>>> origin/master
     // ......................................................
     // ..................RTCMultiConnection Code.............
     // ......................................................
@@ -105,11 +89,6 @@
         if(existing && existing.parentNode) {
             existing.parentNode.removeChild(existing);
         }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/master
         event.mediaElement.removeAttribute('src');
         event.mediaElement.removeAttribute('srcObject');
         var video = document.createElement('video');
@@ -158,7 +137,6 @@
     // ......................................................
     // ......................Handling Room-ID................
     // ......................................................
-<<<<<<< HEAD
 //    function showRoomURL(roomid) {
 //        var roomHashURL = '#' + roomid;
 //        var roomQueryStringURL = '?roomid=' + roomid;
@@ -170,19 +148,6 @@
 //        roomURLsDiv.innerHTML = html;
 //        roomURLsDiv.style.display = 'block';
 //    }
-=======
-    function showRoomURL(roomid) {
-        var roomHashURL = '#' + roomid;
-        var roomQueryStringURL = '?roomid=' + roomid;
-        var html = '<h2>Unique URL for your room:</h2><br>';
-        html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
-        html += '<br>';
-        html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
-        var roomURLsDiv = document.getElementById('room-urls');
-        roomURLsDiv.innerHTML = html;
-        roomURLsDiv.style.display = 'block';
-    }
->>>>>>> origin/master
     (function() {
         var params = {},
             r = /([^&=]+)=?([^&]*)/g;
@@ -205,29 +170,30 @@
             //Ardından otomatik olarak open-room butonuna click yaparız.
             var str = (window.location.pathname).slice(12);
             roomid = str;
-
             document.getElementById("open-or-join-room").click();
         });
-        roomid = localStorage.getItem(connection.socketMessageEvent);
-        roomid = str;
+        var str = (window.location.pathname).slice(12);
+//        roomid = localStorage.getItem(connection.socketMessageEvent);
+          roomid = str;
+    }
+    else {
+            $(document).ready(function () {
 
-    } else {
-        $(document).ready(function () {
+                //Eğer herhangi bir oda oluşturulmamışsa ilk olarak bu if'in içine düşer. O yüzden oda açma butonu burada çalıştırılacak.
+                //window.location.pathname ile url'de / tan sonraki değer alınır. slice(12) diyerek ilk 12 karakter alınır. Yani conference! yazısından
+                //sonraki değerdir bu. ? değil ! koydum. Çünkü soru işareti koyunca kendisinden sonraki değeri görmüyor. & işareti de aynı şekilde.
+                //url'e yazdığımız bu değer, ChatPage.ejs'den gelen ve bizim elle girdiğimiz oda değeridir.
+                //Ardından otomatik olarak open-room butonuna click yaparız.
+                var str = (window.location.pathname).slice(12);
+                roomid = str;
 
-            //Eğer herhangi bir oda oluşturulmamışsa ilk olarak bu if'in içine düşer. O yüzden oda açma butonu burada çalıştırılacak.
-            //window.location.pathname ile url'de / tan sonraki değer alınır. slice(12) diyerek ilk 12 karakter alınır. Yani conference! yazısından
-            //sonraki değerdir bu. ? değil ! koydum. Çünkü soru işareti koyunca kendisinden sonraki değeri görmüyor. & işareti de aynı şekilde.
-            //url'e yazdığımız bu değer, ChatPage.ejs'den gelen ve bizim elle girdiğimiz oda değeridir.
-            //Ardından otomatik olarak open-room butonuna click yaparız.
+                document.getElementById("open-or-join-room").click();
+            });
             var str = (window.location.pathname).slice(12);
+            //roomid = connection.token();
             roomid = str;
 
-            document.getElementById("open-or-join-room").click();
-        });
-        roomid = connection.token();
-        roomid = str;
-
-    }
+        }
     document.getElementById('room-id').value = roomid;
     document.getElementById('room-id').onkeyup = function() {
         localStorage.setItem(connection.socketMessageEvent, this.value);
@@ -260,9 +226,10 @@
 
 <script>
     $('#open-or-join-room').click(function() {
-        $('.make-center').hide();
+        $('#open-or-join-room').show();
     });
 </script>
 <script src="https://cdn.webrtc-experiment.com/common.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>

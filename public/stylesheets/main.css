@@ -3,14 +3,22 @@
 }
 
 .userlist{
-    height: 700px;
-    border: 1px solid dimgray;
+    height: 99%;
+        border: 1px solid #337ab7;
 }
 
 .info{
     font-size: 12px;
     font-style: italic;
     margin: 10px;
+}
+
+#bottom-bar a {
+    float: left;
+    border: none;
+    width: 50%;
+    cursor: pointer;
+    font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
 }
 
 #chat-input{
@@ -45,9 +53,8 @@
 .panel-body{
     overflow-y: scroll;
 }
-
 .mesaj {
-    height: 590px;
+    height: 83%;
 }
 
 .video {
@@ -55,7 +62,7 @@
 }
 
 .user{
-    height: 480px;
+    height: 57%;
 }
 
 ::-webkit-scrollbar-track{
@@ -89,8 +96,4 @@ img {
 
 div.alt {
     position: absolute;
-}
-
-.odaText{
-    margin-bottom: 10px;
 }

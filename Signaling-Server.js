@@ -110,6 +110,8 @@ module.exports = exports = function(app, socketCallback) {
 
         });
 
+        socket.emit('kisi', giris.posta);
+
         socket.on('yeni', function (data) {
 
             socket.nickname = giris.posta;
@@ -179,6 +181,7 @@ module.exports = exports = function(app, socketCallback) {
                     var msg = msg.substring(ind+1);
                     if (name in users){
                         users[name].emit('whisper', {msg:msg, nick: socket.nickname, time: data.datee});
+                        users[socket.nickname].emit('whisper-back', {msg:msg, nick: socket.nickname, time: data.datee, name: name});
 
                         newMsg.user = socket.nickname;
                         newMsg.message = data.mesaj;
