@@ -189,6 +189,29 @@ iframe {
   background-color: rgba(255,255,255,0.9);
 }
 
+input::-webkit-input-placeholder {
+  color: black !important;
+  opacity: 0.5;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+  color: black !important;
+  opacity: 0.5;
+
+}
+
+input::-moz-placeholder {  /* Firefox 19+ */
+  color: black !important;
+  opacity: 0.5;
+
+}
+
+input:-ms-input-placeholder {
+  color: black !important;
+  opacity: 0.5;
+
+}
+
 .wrap-login100 {
   width: 500px;
   border-radius: 10px;
@@ -252,13 +275,13 @@ iframe {
 .input100 {
   font-family: Poppins-Regular;
   font-size: 16px;
-  color: #fff;
+  color: black;
   line-height: 1.2;
 
   display: block;
   width: 100%;
   height: 45px;
-  background: transparent;
+  background: white;
   padding: 0 5px 0 38px;
 }
 

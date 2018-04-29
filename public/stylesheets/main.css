@@ -3,7 +3,7 @@
 }
 
 .userlist{
-    height: 99%;
+    height: 97%;
         border: 1px solid #337ab7;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .user{
-    height: 57%;
+    height: 58%;
 }
 
 ::-webkit-scrollbar-track{

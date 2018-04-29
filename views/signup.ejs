@@ -11,9 +11,6 @@
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/select2.min.css">
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/utilLogin.css">
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/mainLogin.css">
-    <style>
-        body        { padding-top:80px; }
-    </style>
 </head>
 <body>
 
@@ -28,7 +25,7 @@
             <% } %>
 
             <!-- LOGIN FORM -->
-            <form action="/" method="post" id="setNick">
+            <form action="/signup" method="post" id="setNick">
 
             <span class="login100-form-logo">
                             <i class="zmdi zmdi-landscape"></i>
@@ -48,11 +45,11 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <input class="input100 form-control" type="password" name="password" placeholder="Parola">
+                        <input class="input100 form-control" type="password" name="password" placeholder="Parola" id="pass">
                     </div>
 
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <input class="input100 form-control" type="password" name="password" placeholder="Parolayı tekrar girin">
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100 form-control" type="password" name="repassword" id="pas" placeholder="Parolayı tekrar girin">
                     </div>
 
                 </div>
@@ -62,7 +59,7 @@
 
 
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn" type="submit">
+                    <button class="login100-form-btn" type="submit" id="kyt" disabled>
                         Kayıt Ol
                     </button>
                     &nbsp;&nbsp;
@@ -74,7 +71,6 @@
 
 
             </form>
-
 
 
         </div>
@@ -91,9 +87,24 @@
 <script src="/public/js/countdowntime.js"></script>
 <!--===============================================================================================-->
 <script src="/public/js/main.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
 
+        // $('#pass').on('blur', () => {
+        //     if($('#pass').val()===$('#pas').val()){
+        //         $('#kyt').removeAttribute("disabled");
+        //         alert("pass");
+        //     }
+        // });
+
+        $('#pas').on('blur', () => {
+            if( $('#pass').val() === $('#pas').val() ){
+                alert("repass");
+                document.getElementById('kyt').disabled = false;
+            }
+        });
+
+    })
+</script>
 </body>
 </html>
-
-
-
