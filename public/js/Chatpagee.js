@@ -76,7 +76,7 @@ $(document).ready(function ()
     function birebirGorusme() {
         var kisi = $('#kisi').val();
         var odaID = $('#oda').val();
-        var str = 'http://localhost:3000/goruntu!' + odaID;
+        var str = 'https://localhost:3000/goruntu!' + odaID;
 
         var link = "<a  href='" +str+ "' target='_blank'>  isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
         var mesajj = "@" + kisi + " " + link ;
@@ -91,7 +91,7 @@ $(document).ready(function ()
         var kisiler = $('#kisi').val();
 
         var odaID = $('#oda').val();
-        var str = 'http://localhost:3000/conference!' + odaID;
+        var str = 'https://localhost:3000/conference!' + odaID;
 
         var b = [], k = [], n = [];
         var sayac = (kisiler.match(/,/g) || []).length;

@@ -97,9 +97,8 @@
         //     }
         // });
 
-        $('#pas').on('blur', () => {
+        $('#pas').on('keyup', () => {
             if( $('#pass').val() === $('#pas').val() ){
-                alert("repass");
                 document.getElementById('kyt').disabled = false;
             }
         });
