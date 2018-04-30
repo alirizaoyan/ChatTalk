@@ -40,16 +40,16 @@
                         <input type="text" class="form-control" id="oda" placeholder="Oda ismi girin (Video)">
                     </div>
 
-                    <a  id="odaGir" style="width: 50%" target="_blank" href="javascript:
+                    <a  id="odaGir" style="width: 50%" href="javascript:
                         var odaID = $('#oda').val();
                         var str = 'https://localhost:3000/goruntu!' + odaID;
-                        open(str)
+                        open(str,'blank')
                         "><i class="fa fa-user" aria-hidden="true"></i> <span>Bire Bir Görüşme</span></a>
-                    <a  id="odaConfGir" style="width: 50%" target="_blank" href="javascript:
+                    <a  id="odaConfGir" style="width: 50%" href="javascript:
                         var odaID = $('#oda').val();
                         var str = 'https://localhost:3000/conference!' + odaID;
-                        open(str)
-                        "><i class="fa fa-group" aria-hidden="true"></i> <span>Video Konferans</span></a>
+                        open(str,'blank')
+                        " ><i class="fa fa-group" aria-hidden="true"></i> <span>Video Konferans</span></a>
                 </div>
             </div>
         </div>

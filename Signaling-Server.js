@@ -74,32 +74,32 @@ module.exports = exports = function(app, socketCallback) {
 
 
 
-        User.findOne({
-            email: giris.posta
-        },(err,data)=>{
-            if(err)
-                console.log(err);
-            else
-            {
-
-
-
-                if(data != null){
-                    for(var i = 0; i< data.friendsId.length; i++)
-                    {
-                        friends[i] = data.friendsId[i];
-                        User.findById(friends[i],(err, data)=>{
-                            socket.emit('friends',  data.email);
-                        });
-                    }
-                }
-                else{
-                    console.log("yok");
-                }
-
-            }
-
-        });
+        // User.findOne({
+        //     email: giris.posta
+        // },(err,data)=>{
+        //     if(err)
+        //         console.log(err);
+        //     else
+        //     {
+        //
+        //
+        //
+        //         if(data != null){
+        //             for(var i = 0; i< data.friendsId.length; i++)
+        //             {
+        //                 friends[i] = data.friendsId[i];
+        //                 User.findById(friends[i],(err, data)=>{
+        //                     socket.emit('friends',  data.email);
+        //                 });
+        //             }
+        //         }
+        //         else{
+        //             console.log("yok");
+        //         }
+        //
+        //     }
+        //
+        // });
 
         socket.on('vidyo', function (data) {
             socket.emit('vidyo-konferans', data);

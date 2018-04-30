@@ -7,9 +7,6 @@ var options = {
 };
 var app = express();
 var server = require('https').createServer(options,app);
-var Message = require('./models/message');
-var User = require('./models/kullanici');
-var GrpMessage = require('./models/grpmessage');
 
 function resolveURL(url) {
     var isWin = !!process.platform.match(/^win/);
@@ -27,9 +24,8 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
-var users = {};
 
-server.listen(3000);
+server.listen(80);
 
 
 
@@ -45,6 +41,7 @@ app.use('/node_modules',express.static(path.join(__dirname,'node_modules')));
 app.use('/public',express.static(path.join(__dirname,'public')));
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'/views'));
+app.set("view options", { layout: "login.ejs" });
 
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
@@ -61,16 +58,4 @@ require('./routes/routes.js')(app, passport); // load our routes and pass in our
 
 require('./config/passport')(passport);
 
-
-
-var giris = require('./config/passport');
-var friends = {};
-
- require('./Signaling-Server.js')(server);
-
-
-
-const kullaniciSayisi = (io,data) =>{
-  const room = io.sockets.adapter.rooms[data.name];
-  return room ? room.length : 0;
-};
+require('./Signaling-Server.js')(server);
