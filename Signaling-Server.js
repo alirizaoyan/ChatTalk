@@ -68,54 +68,20 @@ module.exports = exports = function(app, socketCallback) {
     var GrpMessage = require('./models/grpmessage');
     var users = {};
     var giris = require('./config/passport');
-    var friends = {};
-
+    var girmeyis = require('./routes/routes');
     function onConnection(socket) {
 
 
 
-        // User.findOne({
-        //     email: giris.posta
-        // },(err,data)=>{
-        //     if(err)
-        //         console.log(err);
-        //     else
-        //     {
-        //
-        //
-        //
-        //         if(data != null){
-        //             for(var i = 0; i< data.friendsId.length; i++)
-        //             {
-        //                 friends[i] = data.friendsId[i];
-        //                 User.findById(friends[i],(err, data)=>{
-        //                     socket.emit('friends',  data.email);
-        //                 });
-        //             }
-        //         }
-        //         else{
-        //             console.log("yok");
-        //         }
-        //
-        //     }
-        //
-        // });
 
-        socket.on('vidyo', function (data) {
-            socket.emit('vidyo-konferans', data);
 
-        });
-        socket.on('profil', function (data) {
-            socket.emit('prof', data);
 
-        });
-
-        socket.emit('kisi', giris.posta);
+        socket.emit('kisi', girmeyis.posta);
 
         socket.on('yeni', function (data) {
 
-            socket.nickname = giris.posta;
 
+            socket.nickname = girmeyis.posta;
             users[socket.nickname] = socket;
 
             Message.find({
@@ -125,21 +91,20 @@ module.exports = exports = function(app, socketCallback) {
                     console.log(err);
                 if(veri !== null){
                     socket.emit('gonder', veri);
-                    //  console.log(veri);
+
                 }
 
             });
+            console.log("data : " + socket.nickname);
 
-            // nicknames.push(socket.nickname);
             updateNicknames();
-            //  console.log(users);
         });
 
 
 
         function updateNicknames() {
-            // console.log(users);
-            //  console.log(socket.nickname);
+            console.log("users : " + Object.keys(users));
+
             io.sockets.emit('usernames', Object.keys(users));
         }
 
@@ -164,8 +129,6 @@ module.exports = exports = function(app, socketCallback) {
 
         socket.on('send message', function (data,callback) {
 
-            console.log(data.mesaj);
-            console.log(data.datee);
 
             var newMsg = new Message();
             var bosluk = "";
@@ -192,7 +155,6 @@ module.exports = exports = function(app, socketCallback) {
                             console.log(newMsg);
                         });
 
-                        console.log('Whisper !');
                     }else{
 
                         User.find({

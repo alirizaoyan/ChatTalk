@@ -78,7 +78,7 @@ $(document).ready(function ()
         var odaID = $('#oda').val();
         var str = 'https://localhost:3000/goruntu!' + odaID;
 
-        var link = "<a  href='" +str+ "' target='_blank'>  isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
+        var link = "<a  href='" +str+ "' target='_blank'> Size birebir görüntülü görüşme isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
         var mesajj = "@" + kisi + " " + link ;
         $('#mesaj').val(mesajj);
 
@@ -103,7 +103,7 @@ $(document).ready(function ()
             kisiler = kisiler.replace(b[i], "");
             //$("#demo").append(k[i]);
 
-            var link = "<a  href='" + str + "' target='_blank'> görüntülü görüşme isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
+            var link = "<a  href='" + str + "' target='_blank'> Size video konferans görüntülü görüşme isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
             var mesajj = "@" + k[i] + " " + link;
             $('#mesaj').val(mesajj);
             document.getElementById('ozelMsgGonder').click();
@@ -113,13 +113,6 @@ $(document).ready(function ()
     }
 
 
-    $('#odaConf').on('click', () => {
-        socket.emit('vidyo', { name: $('#oda').val()});
-    });
-
-    $('#odaProfil').on('click', () => {
-        socket.emit('profil', { name: $('#oda').val()});
-    });
 
 
     socket.on('new join', (data)=>{
@@ -186,8 +179,7 @@ $(document).ready(function ()
     $messageForm.submit(function (e) {
         e.preventDefault();
         socket.emit('send message', {mesaj: $messageBox.val(), datee: today.toLocaleDateString("tr-TR",options)}, function (data) {
-            //add stuff later
-            // alert("emit'e girdi");
+
             $chat.append('<span class="error">' + data + "</span></br>");
         });
         $messageBox.val('');
@@ -236,15 +228,16 @@ $(document).ready(function ()
             '</div>' +data.msg+'</div></li></div>');
     });
 
+    var html="";
     socket.on('usernames', function (data) {
 
         $kisiSayisi.html('<i class="glyphicon glyphicon-user"></i> Çevrimiçi (' + data.length +')');
-
-        var html ='';
         for(i=0; i<data.length; i++){
             html+='<b><font face="verdana" color="#337ab7">' + data[i]+ '</font></b></br>';
             $users.html(html);
+
         }
+        html = "";
         document.getElementById("users").scrollTop = document.getElementById("users").scrollHeight;
     });
 

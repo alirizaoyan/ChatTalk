@@ -19,9 +19,6 @@
         <div class="wrap-login100">
 
         <!-- show any messages that come back with authentication -->
-        <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-        <% } %>
 
         <!-- LOGIN FORM -->
         <form action="/" method="post" id="setNick">
@@ -39,18 +36,18 @@
                 <div class="wrap-input100 validate-input" data-validate="Enter password">
 
 
-                    <input class="input100 form-control" type="text" name="email" placeholder="Kullanıcı adı">
+                    <input class="input100 form-control" type="text" id="email" name="email" placeholder="Kullanıcı adı">
 
                 </div>
 
                 <div class="wrap-input100 validate-input" data-validate="Enter password">
-                    <input class="input100 form-control" type="password" name="password" placeholder="Parola">
+                    <input class="input100 form-control" id="password" type="password" name="password" placeholder="Parola">
                 </div>
 
             </div>
 
             <div class="container-login100-form-btn">
-                <button class="login100-form-btn" type="submit">
+                <button class="login100-form-btn" id="giris" type="submit">
                     Giriş
                 </button>
                     &nbsp;&nbsp;
@@ -73,6 +70,27 @@
 <script src="/public/js/countdowntime.js"></script>
 <!--===============================================================================================-->
 <script src="/public/js/main.js"></script>
+<script>
+    $(document).ready(function(){
+        var email,pass;
+        $("#giris").click(function(){
+            email=$("#email").val();
+            pass=$("#password").val();
 
+            $.post("https://localhost:3000/anasayfa",{email:email,pass:pass},function(data){
+                alert("Girşi yapıldı");
+                if(data==='done')
+                {
+                   alert("data : " + data);
+                    window.location.href="/anasayfa";
+                }
+                else
+                {
+                    alert("Başarısız oldu");
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>

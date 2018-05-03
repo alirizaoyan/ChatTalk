@@ -20,14 +20,13 @@ var db = require('./models/db');
 var passport = require('passport');
 var flash    = require('connect-flash');
 
+
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
-var session      = require('express-session');
-
-server.listen(80);
-
-
+var session = require('express-session');
+server.listen(3000);
+app.use(session({secret: 'ssshhhhh'}));
 
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
@@ -48,7 +47,7 @@ app.use(bodyParser.json());
 
 
 // required for passport
-app.use(session({ secret: 'bitirmecalismasi' })); // session secret
+app.use(session({ secret: 'bitirmecalismasi'})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -56,6 +55,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // routes ======================================================================
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-require('./config/passport')(passport);
+//require('./config/passport')(passport);
 
 require('./Signaling-Server.js')(server);
