@@ -6,7 +6,7 @@ var options = {
     cert: fs.readFileSync(path.join(__dirname, resolveURL('ssl/certificate.pem')))
 };
 var app = express();
-var server = require('http').createServer(app);
+var server = require('https').createServer(options,app);
 
 function resolveURL(url) {
     var isWin = !!process.platform.match(/^win/);
