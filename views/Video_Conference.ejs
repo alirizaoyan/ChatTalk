@@ -28,9 +28,6 @@
         <button class="btn"  id="open-room">Open Room</button>
         <button style="display: none;" id="join-room">Join Room</button>
         <button id="open-or-join-room"></button>
-
-        <!--<div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>-->
-
         <div id="videos-container"></div>
     </div>
 
@@ -100,6 +97,7 @@
         var width = parseInt(connection.videosContainer.clientWidth / 2) - 20;
         var mediaElement = getHTMLMediaElement(video, {
             title: event.userid,
+            buttons:[],
             width: width,
             showOnMouseEnter: false
         });
@@ -133,20 +131,7 @@
         document.getElementById('join-room').disabled = true;
         document.getElementById('room-id').disabled = true;
     }
-    // ......................................................
-    // ......................Handling Room-ID................
-    // ......................................................
-//    function showRoomURL(roomid) {
-//        var roomHashURL = '#' + roomid;
-//        var roomQueryStringURL = '?roomid=' + roomid;
-//        var html = '<h2>Unique URL for your room:</h2><br>';
-//        html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
-//        html += '<br>';
-//        html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
-//        var roomURLsDiv = document.getElementById('room-urls');
-//        roomURLsDiv.innerHTML = html;
-//        roomURLsDiv.style.display = 'block';
-//    }
+
     (function() {
         var params = {},
             r = /([^&=]+)=?([^&]*)/g;

@@ -32,17 +32,17 @@
 }
 
 .chat li{
-    margin-bottom: 10px;
-    padding-bottom: 5px;
+    margin-bottom: 1%;
+    padding-bottom: 1%;
     border-bottom: 1px dotted #B3A9A9;
 }
 
 .chat li.left .chat-body{
-    margin-left: 60px;
+    margin-left: 5%;
 }
 
 .chat li.right .chat-body{
-    margin-right: 60px;
+    margin-right: 5%;
 }
 
 .chat li .chat-body p{

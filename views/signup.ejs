@@ -1,101 +1,81 @@
 <html>
 <head>
     <title>Chat & Talk</title>
-
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href=/fonts/iconic/css/material-design-iconic-font.css">
-    <link rel="stylesheet" type="text/css" href=/public/stylesheets/animate.css>
-    <link rel="stylesheet" type="text/css" href="/public/stylesheets/hamburgers.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/stylesheets/animsition.min.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/select2.min.css">
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/utilLogin.css">
     <link rel="stylesheet" type="text/css" href="/public/stylesheets/mainLogin.css">
 </head>
 <body>
-
 <div class="limiter">
-    <div class="container-login100" style="background-image: url('/public/images/bg-01.jpg');">
-        <div class="wrap-login100">
-
-
-            <!-- show any messages that come back with authentication -->
-            <% if (message.length > 0) { %>
-            <div class="alert alert-danger"><%= message %></div>
-            <% } %>
-
-            <!-- LOGIN FORM -->
-            <form action="/signup" method="post" id="setNick">
-
-            <span class="login100-form-logo">
-                            <i class="zmdi zmdi-landscape"></i>
-							<img src="/public/images/amblem.png">
-                        </span>
-
-                <span class="login100-form-title p-b-34 p-t-27">
+    <div class="modal">
+        <div class="modal__inner">
+            <div class="wrap-login100">
+                <form action="/signup" method="post" id="setNick">
+					<span class="login100-form-title p-b-34 p-t-27">
                            Chat & Talk
                         </span>
-
-                <div class="form-group" >
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-
-
-                        <input class="input100 form-control" type="text" name="email" placeholder="Kullanıcı adı">
-
+                    <% if (message.length > 0) { %>
+                    <div id="signupalert" class="login100-form-btn">
+                    <%= message %></div></br>
+                    <% } %>
+                    <div class="form-group" >
+                        <div class="wrap-input100 validate-input" data-validate="Enter password">
+                            <input class="input100 form-control" type="text" name="email" placeholder="Kullanıcı adı">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+                        </div>
+                        <div class="wrap-input100 validate-input" data-validate="Enter password">
+                            <input class="input100 form-control" type="password" name="password" placeholder="Parola" id="pass">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+                        </div>
+                        <div class="wrap-input100 validate-input" data-validate="Enter password">
+                            <input class="input100 form-control" type="password" name="repassword" id="pas" placeholder="Parolayı tekrar giriniz">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+                        </div>
                     </div>
-
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <input class="input100 form-control" type="password" name="password" placeholder="Parola" id="pass">
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" type="submit" id="kyt" disabled>
+                            Kayıt Ol
+                        </button>
+                        <div class="text-center p-t-12">
+                            <a class="txt2" href="/login">
+                                Zaten bir hesabınız var mı?
+                                <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
-
-                    <div class="wrap-input100 validate-input">
-                        <input class="input100 form-control" type="password" name="repassword" id="pas" placeholder="Parolayı tekrar girin">
-                    </div>
-
-                </div>
-
-
-
-
-
-                <div class="container-login100-form-btn">
-                    <button class="login100-form-btn" type="submit" id="kyt" disabled>
-                        Kayıt Ol
-                    </button>
-                    &nbsp;&nbsp;
-
-                    <a class="login100-form-btn"  href="/login">Zaten bir hesabınız var mı? </a>
-
-                </div>
-
-
-
-            </form>
-
-
+                </form>
+            </div>
         </div>
     </div>
+
 </div>
+
+
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/public/js/animsition.min.js"></script>
-<!--===============================================================================================-->
 <script src="/public/js/popper.js"></script>
 <script src="/public/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
 <script src="/public/js/select2.min.js"></script>
-<!--===============================================================================================-->
 <script src="/public/js/countdowntime.js"></script>
-<!--===============================================================================================-->
 <script src="/public/js/main.js"></script>
+<script>
+    setTimeout(function() {
+        $('#signupalert').fadeOut('slow');
+    }, 3000);
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
-
-        // $('#pass').on('blur', () => {
-        //     if($('#pass').val()===$('#pas').val()){
-        //         $('#kyt').removeAttribute("disabled");
-        //         alert("pass");
-        //     }
-        // });
 
         $('#pas').on('keyup', () => {
             if( $('#pass').val() === $('#pas').val() ){
