@@ -56,6 +56,7 @@ $(document).ready(function ()
 
     socket.on('new grpJoin', (data)=>{
         $('#grp-mesajlar').append(data.name+ ' kişisi katıldı.</br>');
+        document.getElementById("grp-panel").scrollTop = document.getElementById("grp-panel").scrollHeight;
     });
 
 
@@ -76,7 +77,7 @@ $(document).ready(function ()
     function birebirGorusme() {
         var kisi = $('#kisi').val();
         var odaID = $('#oda').val();
-        var str = 'https://localhost:3000/goruntu!' + odaID;
+        var str = 'https://chat-to-me.herokuapp.com/goruntu!' + odaID;
 
         var link = "<a  href='" +str+ "' target='_blank'> Size birebir görüntülü görüşme isteği gönderildi. Görüşmek istiyorsanız  tıklayınız.</a>";
         var mesajj = "@" + kisi + " " + link ;
@@ -91,7 +92,7 @@ $(document).ready(function ()
         var kisiler = $('#kisi').val();
 
         var odaID = $('#oda').val();
-        var str = 'https://localhost:3000/conference!' + odaID;
+        var str = 'https://chat-to-me.herokuapp.com/conference!' + odaID;
 
         var b = [], k = [], n = [];
         var sayac = (kisiler.match(/,/g) || []).length;
@@ -136,6 +137,7 @@ $(document).ready(function ()
             '<div class="chat-body clearfix">'+
             '<div class="header"><strong class="primary-font" style="color: black">'+ data.nick+" (Çevrimdışı Gelen)"+'</strong><span class="sag">'+ data.time +'</span> '+
             '</div>' +data.msg+'</div></li></div>');
+        document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
 
     socket.on('socket leave', (data)=>{
@@ -162,6 +164,7 @@ $(document).ready(function ()
     socket.on('leave grpRoom', (data)=>{
         $('#sayi').html('Sohbet Odası'+'<span class="sag">'+'Odada '+data.count+' kişi var.'+'</span>');
         $('#grp-mesajlar').append(data.name+ ' kişisi çıktı.</br>');
+        document.getElementById("grp-panel").scrollTop = document.getElementById("grp-panel").scrollHeight;
     });
 
     socket.on('destroy', ()=>{
@@ -183,6 +186,7 @@ $(document).ready(function ()
             $chat.append('<span class="error">' + data + "</span></br>");
         });
         $messageBox.val('');
+        document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
 
     $grpMessageForm.submit(function (e) {
@@ -192,6 +196,7 @@ $(document).ready(function ()
             $grpChat.append('<span class="error">' + data + "</span></br>");
         });
         $grpMessageBox.val('');
+        document.getElementById("grp-panel").scrollTop = document.getElementById("grp-panel").scrollHeight;
     });
 
     socket.on('new message', function (data) {
@@ -218,6 +223,7 @@ $(document).ready(function ()
             '<div class="chat-body clearfix">'+
             '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" (Özel)"+'</strong><span class="sag">'+ data.time +'</span> '+
             '</div>' +data.msg+'</div></li></div>');
+        document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
 
     socket.on('whisper-back', function (data) {
@@ -226,6 +232,7 @@ $(document).ready(function ()
             '<div class="chat-body clearfix">'+
             '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" ("+data.name+")"+'</strong><span class="sag">'+ data.time +'</span> '+
             '</div>' +data.msg+'</div></li></div>');
+        document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
 
     var html="";

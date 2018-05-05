@@ -6,7 +6,7 @@ var options = {
     cert: fs.readFileSync(path.join(__dirname, resolveURL('ssl/certificate.pem')))
 };
 var app = express();
-var server = require('https').createServer(options,app);
+var server = require('http').createServer(app);
 
 function resolveURL(url) {
     var isWin = !!process.platform.match(/^win/);
@@ -25,8 +25,8 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session = require('express-session');
-server.listen(3000);
-app.use(session({secret: 'ssshhhhh'}));
+require('./config/passport')(passport);
+server.listen(process.env.PORT || 3000);
 
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
