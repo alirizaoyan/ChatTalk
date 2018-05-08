@@ -216,6 +216,15 @@ $(document).ready(function ()
             '</div>' +data.msg+'</div></li></div>');
         document.getElementById("grp-panel").scrollTop = document.getElementById("grp-panel").scrollHeight;
     });
+    socket.on('grup mesaj', (data)=>{
+        $grpChat.append('<div>' +
+            '<li  class="left clearfix">'+
+            '<div class="chat-body clearfix" style="float: right">'+
+            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b> <b>'+  today.toLocaleDateString("tr-TR",options) +'</b></span> '+
+            '</div><b>' +data.msg+'</div></li></div>');
+        document.getElementById("grp-panel").scrollTop = document.getElementById("grp-panel").scrollHeight;
+    });
+
 
     socket.on('whisper', function (data) {
         $chat.append('<div>' +
@@ -229,9 +238,17 @@ $(document).ready(function ()
     socket.on('whisper-back', function (data) {
         $chat.append('<div>' +
             '<li  class="left clearfix">'+
-            '<div class="chat-body clearfix">'+
-            '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" ("+data.name+")"+'</strong><span class="sag">'+ data.time +'</span> '+
-            '</div>' +data.msg+'</div></li></div>');
+            '<div class="chat-body clearfix" style="float: right">'+
+            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b> <b>'+ data.time +'</b></span> '+
+            '</div><b>' +data.msg+'</b><b style="color: red"> (kime:'+data.name+')</b>'+'</div></li></div>');
+        document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
+    });
+    socket.on('genel sohbet', function (data) {
+        $chat.append('<div>' +
+            '<li  class="left clearfix">'+
+            '<div class="chat-body clearfix" style="float: right">'+
+            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b> <b>'+  today.toLocaleDateString("tr-TR",options) +'</b></span> '+
+            '</div><b>' +data.msg+'</div></li></div>');
         document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
 

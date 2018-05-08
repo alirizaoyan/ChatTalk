@@ -31,9 +31,6 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
 
-
-
-
 app.use('/node_modules',express.static(path.join(__dirname,'node_modules')));
 app.use('/public',express.static(path.join(__dirname,'public')));
 app.set('view engine','ejs');

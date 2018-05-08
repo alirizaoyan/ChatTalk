@@ -72,7 +72,6 @@ module.exports = function(app,  passport) {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
@@ -89,8 +88,12 @@ function isLoggedIn(req, res, next) {
     else if(gelenIstek === "confere")
     {
         res.render('Video_Conference.ejs');
-    }
-    else
+    }else if(gelenIstek==="logout")
+    {
+        req.session.destroy();
+        req.logout();
+        res.redirect('/');
+    }else
         res.redirect('/');
 
     //res.redirect('/');

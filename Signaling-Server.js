@@ -142,19 +142,32 @@ module.exports = exports = function(app, socketCallback) {
                 if(ind !== -1){
                     var name = msg.substring(0,ind);
                     var msg = msg.substring(ind+1);
+                    console.log(msg.substring(4,8));
                     if (name in users){
                         users[name].emit('whisper', {msg:msg, nick: socket.nickname, time: data.datee});
-                        users[socket.nickname].emit('whisper-back', {msg:msg, nick: socket.nickname, time: data.datee, name: name});
+                        if(msg.substring(4,8)=="href"){
+                            console.log("if");
+                            newMsg.user = socket.nickname;
+                            newMsg.message = data.mesaj;
+                            newMsg.whom = name;
+                            newMsg.time = data.datee;
 
-                        newMsg.user = socket.nickname;
-                        newMsg.message = data.mesaj;
-                        newMsg.whom = name;
-                        newMsg.time = data.datee;
+                            newMsg.save(function() {
+                                console.log(newMsg);
+                            });
+                        }else{
+                            console.log("else");
+                            users[socket.nickname].emit('whisper-back', {msg:msg, nick: socket.nickname, time: data.datee, name: name});
 
-                        newMsg.save(function() {
-                            console.log(newMsg);
-                        });
+                            newMsg.user = socket.nickname;
+                            newMsg.message = data.mesaj;
+                            newMsg.whom = name;
+                            newMsg.time = data.datee;
 
+                            newMsg.save(function() {
+                                console.log(newMsg);
+                            });
+                        }
                     }else{
 
                         User.find({
@@ -182,7 +195,8 @@ module.exports = exports = function(app, socketCallback) {
                     callback('Error! lütfen kişisel mesaj girin.');
                 }
             }else {
-                io.sockets.emit('new message', {msg:msg, nick: socket.nickname});
+                socket.broadcast.emit('new message', {msg:msg, nick: socket.nickname});
+                users[socket.nickname].emit('genel sohbet', {msg:msg, nick: socket.nickname});
 
                 newMsg.user = socket.nickname;
                 newMsg.message = data.mesaj;
@@ -195,7 +209,8 @@ module.exports = exports = function(app, socketCallback) {
         });
 
         socket.on('grp message', (data)=>{
-            io.to(data.name).emit('new grp message', {msg:data.mesaj, nick: socket.nickname});
+            socket.to(data.name).emit('new grp message', {msg:data.mesaj, nick: socket.nickname});
+            users[socket.nickname].emit('grup mesaj', {msg:data.mesaj, nick: socket.nickname});
 
             var newGrpMsg = new GrpMessage();
             newGrpMsg.user = socket.nickname;
