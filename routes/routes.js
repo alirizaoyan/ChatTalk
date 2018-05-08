@@ -2,9 +2,18 @@
 
 module.exports = function(app,  passport) {
     app.get('/',function(req, res) {
-        req.logout();
-        res.render('login.ejs', {message: req.flash('loginMessage')});
-
+        if(req.session.email===undefined){
+            res.render('login.ejs', {message: req.flash('loginMessage')});
+        }
+        if(req.session.email!==undefined){
+            const User   = require('../models/kullanici');
+            User.findOne({ email: req.session.email},(err,data)=>{
+                    module.exports.posta = data.email;
+                    res.render('ChatPage.ejs', {
+                        user : data // get the user out of session and pass to template
+                    });
+            });
+        }
     });
 
     app.get('/signup', function(req, res) {
@@ -16,25 +25,8 @@ module.exports = function(app,  passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true// allow flash messages
     }));
-    app.get('/anasayfa', isLoggedIn, function(req, res) {
-
-        if(req.session.email) {
-
-            res.render('ChatPage.ejs', {
-
-                user : req.user // get the user out of session and pass to template
-            });
-            console.log("user : " + req.user);
-        } else {
-            res.write('<h1>Please login first.</h1>');
-            res.end('<a href="/">Login</a>');
-        }
-
-    });
     //Farklı porta yönlendirme yapabilmek için önce gelen her isteği karşılayacak bir isteğin yönlendirildiği bir kod yazılıyor.
     //Devamında gelen parametreye göre sayfa yönlendirmeleri yapılıyor.
-
-
 
     app.get('*', isLoggedIn);
 
@@ -84,9 +76,6 @@ function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
-
-
-    console.log("req.url : " + req.url);
     // if they aren't redirect them to the home page
 
     var gelenIstek = (req.url).slice(1,8);

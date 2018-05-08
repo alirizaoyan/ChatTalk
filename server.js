@@ -14,8 +14,6 @@ function resolveURL(url) {
     return url.replace(/\//g, '\\');
 }
 
-
-
 var db = require('./models/db');
 var passport = require('passport');
 var flash    = require('connect-flash');
