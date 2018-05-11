@@ -3,7 +3,6 @@ $(document).ready(function ()
 {
     var socket = io.connect();
 
-
     //Oda id'sini random verme
     var dizi='';
     var dizi2=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','r','s','t','u','v','x','y','z'];
@@ -13,7 +12,6 @@ $(document).ready(function ()
         dizi +=(dizi2[Math.floor(Math.random() * Math.floor(22))]);
     }
     $('#oda').val(dizi);
-
 
     var $messageForm = $('#send-message');
     var $messageBox = $('#mesaj');
@@ -32,7 +30,7 @@ $(document).ready(function ()
     var grpOda = document.getElementById("grp-oda");
     var grpOdaGir = document.getElementById("grp-odaGir");
 
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    var options = { hour: 'numeric', minute: 'numeric'};
     var today  = new Date();
 
 
@@ -48,30 +46,25 @@ $(document).ready(function ()
     });
 
     socket.on('new grp', (data)=>{
-        $('#sayi').html('Sohbet Odası'+'<span class="sag">'+'Odada '+data.count+' kişi var.'+'</span>');
+        $('#sayi').html('Sohbet Odası '+'<span class="sag">'+'Odada '+data.count+' kişi var.'+'</span>');
         $('#oda, #odaGir').attr('disabled','disabled');
         $('#grp-oda, #grp-odaGir').attr('disabled','disabled');
         $('#grp-odaCik').show();
     });
 
     socket.on('new grpJoin', (data)=>{
-        $('#grp-mesajlar').append(data.name+ ' kişisi katıldı.</br>');
+        $('#grp-mesajlar').append(data.name+ ' kişisi katıldı.</br></br>');
         document.getElementById("grp-panel").scrollTop = document.getElementById("grp-panel").scrollHeight;
     });
-
 
     $('#odaGir').click(function () {
 
         birebirGorusme();
-
-
     });
 
     $('#odaConfGir').click(function () {
 
         konferansGorusme();
-
-
     });
 
     function birebirGorusme() {
@@ -113,9 +106,6 @@ $(document).ready(function ()
         odaID.hide();
     }
 
-
-
-
     socket.on('new join', (data)=>{
         $('#bilgi').html('Bu odada <b>'+ data.count +'</b> kişi var.');
     });
@@ -135,7 +125,7 @@ $(document).ready(function ()
         $chat.append('<div>' +
             '<li id="msgID" class="left clearfix">'+
             '<div class="chat-body clearfix">'+
-            '<div class="header"><strong class="primary-font" style="color: black">'+ data.nick+" (Çevrimdışı Gelen)"+'</strong><span class="sag">'+ data.time +'</span> '+
+            '<div class="header"><strong class="primary-font" style="color: black">'+ data.nick+" (Çevrimdışı Gelen)"+'</strong><span class="sag"><b class="primary-font">'+ data.time +'</b></span> '+
             '</div>' +data.msg+'</div></li></div>');
         document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
@@ -181,7 +171,7 @@ $(document).ready(function ()
 
     $messageForm.submit(function (e) {
         e.preventDefault();
-        socket.emit('send message', {mesaj: $messageBox.val(), datee: today.toLocaleDateString("tr-TR",options)}, function (data) {
+        socket.emit('send message', {mesaj: $messageBox.val(), datee: today.toLocaleTimeString("tr-TR",options)}, function (data) {
 
             $chat.append('<span class="error">' + data + "</span></br>");
         });
@@ -191,7 +181,7 @@ $(document).ready(function ()
 
     $grpMessageForm.submit(function (e) {
         e.preventDefault();
-        socket.emit('grp message', {mesaj: $grpMessageBox.val(), datee:today.toLocaleDateString("tr-TR",options), name: $('#grp-oda').val(), room: $('#grp-oda').val()}, function (data){
+        socket.emit('grp message', {mesaj: $grpMessageBox.val(), datee:today.toLocaleTimeString("tr-TR",options), name: $('#grp-oda').val(), room: $('#grp-oda').val()}, function (data){
             //daha sonra kullanılabilir.
             $grpChat.append('<span class="error">' + data + "</span></br>");
         });
@@ -202,8 +192,10 @@ $(document).ready(function ()
     socket.on('new message', function (data) {
         $chat.append('<div>' +
             '<li  class="left clearfix">'+
-            '<div class="chat-body clearfix">'+
-            '<div class="header"><strong class="primary-font">'+ data.nick+'</strong><span class="sag">'+  today.toLocaleDateString("tr-TR",options)+'</span> '+
+            '<div class="chat-body clearfix" style="float: right">'+
+            '<div class="header"><span class="sag"><b class="primary-font">'+today.toLocaleTimeString("tr-TR",options) +'</b></span></div></div>'+
+            '<div class="chat-body clearfix" style="float: left">'+
+            '<div class="header"><strong class="sol primary-font">'+data.nick+'</strong>'+
             '</div>' +data.msg+'</div></li></div>');
         document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
@@ -211,16 +203,21 @@ $(document).ready(function ()
     socket.on('new grp message', (data)=>{
         $grpChat.append('<div>' +
             '<li  class="left clearfix">'+
-            '<div class="chat-body clearfix">'+
-            '<div class="header"><strong class="primary-font">'+ data.nick+'</strong><span class="sag">'+  today.toLocaleDateString("tr-TR",options)+'</span> '+
+            '<div class="chat-body clearfix" style="float: right">'+
+            '<div class="header"><span class="sag"><b class="primary-font">'+today.toLocaleTimeString("tr-TR",options) +'</b></span></div></div>'+
+            '<div class="chat-body clearfix" style="float: left">'+
+            '<div class="header"><strong class="sol primary-font">'+data.nick+'</strong>'+
             '</div>' +data.msg+'</div></li></div>');
         document.getElementById("grp-panel").scrollTop = document.getElementById("grp-panel").scrollHeight;
     });
+
     socket.on('grup mesaj', (data)=>{
         $grpChat.append('<div>' +
             '<li  class="left clearfix">'+
+            '<div class="chat-body clearfix" style="float: left">'+
+            '<div class="header"><span class="sol"><b class="primary-font">'+today.toLocaleTimeString("tr-TR",options) +'</b></span></div></div>'+
             '<div class="chat-body clearfix" style="float: right">'+
-            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b> <b>'+  today.toLocaleDateString("tr-TR",options) +'</b></span> '+
+            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b></span> '+
             '</div><b>' +data.msg+'</div></li></div>');
         document.getElementById("grp-panel").scrollTop = document.getElementById("grp-panel").scrollHeight;
     });
@@ -229,8 +226,10 @@ $(document).ready(function ()
     socket.on('whisper', function (data) {
         $chat.append('<div>' +
             '<li  class="left clearfix">'+
-            '<div class="chat-body clearfix">'+
-            '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" (Özel)"+'</strong><span class="sag">'+ data.time +'</span> '+
+            '<div class="chat-body clearfix" style="float: right">'+
+            '<div class="header"><span class="sag"><b class="primary-font">'+today.toLocaleTimeString("tr-TR",options) +'</b></span></div></div>'+
+            '<div class="chat-body clearfix" style="float: left">'+
+            '<div class="header"><strong class="primary-font" style="color: red">'+ data.nick+" (Özel)"+'</strong><span class="sol"></span> '+
             '</div>' +data.msg+'</div></li></div>');
         document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
@@ -238,16 +237,21 @@ $(document).ready(function ()
     socket.on('whisper-back', function (data) {
         $chat.append('<div>' +
             '<li  class="left clearfix">'+
+            '<div class="chat-body clearfix" style="float: left">'+
+            '<div class="header"><span class="sol"><b class="primary-font">'+today.toLocaleTimeString("tr-TR",options) +'</b></span></div></div>'+
             '<div class="chat-body clearfix" style="float: right">'+
-            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b> <b>'+ data.time +'</b></span> '+
-            '</div><b>' +data.msg+'</b><b style="color: red"> (kime:'+data.name+')</b>'+'</div></li></div>');
+            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b></span> '+
+            '</div><b>'+data.msg+'<b style="color: red">(Kime:'+data.name+')</b>'+'</div></li></div>');
         document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });
+
     socket.on('genel sohbet', function (data) {
         $chat.append('<div>' +
             '<li  class="left clearfix">'+
+            '<div class="chat-body clearfix" style="float: left">'+
+            '<div class="header"><span class="sol"><b class="primary-font">'+today.toLocaleTimeString("tr-TR",options) +'</b></span></div></div>'+
             '<div class="chat-body clearfix" style="float: right">'+
-            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b> <b>'+  today.toLocaleDateString("tr-TR",options) +'</b></span> '+
+            '<div class="header"><span class="sag"><b class="primary-font">'+data.nick+'</b></span> '+
             '</div><b>' +data.msg+'</div></li></div>');
         document.getElementById("panel").scrollTop = document.getElementById("panel").scrollHeight;
     });

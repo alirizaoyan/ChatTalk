@@ -30,12 +30,6 @@ module.exports = function(app,  passport) {
 
     app.get('*', isLoggedIn);
 
-    app.get('/logout', function(req, res) {
-        req.session.destroy();
-        req.logout();
-        res.redirect('/');
-    });
-
     app.post('/',function (req,res,done) {
         const User   = require('../models/kullanici');
         User.findOne({ email: req.body.email},(err,data)=>{
@@ -85,19 +79,16 @@ function isLoggedIn(req, res, next) {
 
         res.render('One-to-One.ejs');
     }
-    else if(gelenIstek === "confere")
-    {
+    else if(gelenIstek === "confere") {
         res.render('Video_Conference.ejs');
-    }else if(gelenIstek==="logout")
-    {
+    }
+    else if(gelenIstek==="logout") {
         req.session.destroy();
         req.logout();
         res.redirect('/');
-    }else
+    }
+    else
         res.redirect('/');
-
-    //res.redirect('/');
-    //console.log("req.header : " + req.headers.referer);
 }
 function ignoreFavicon(req, res, next) {
     if (req.originalUrl === '/favicon.ico') {

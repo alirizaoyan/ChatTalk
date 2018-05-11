@@ -94,6 +94,10 @@ img {
     float: right;
 }
 
+.sol{
+    float:left;
+}
+
 div.alt {
     position: absolute;
 }

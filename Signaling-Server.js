@@ -67,21 +67,13 @@ module.exports = exports = function(app, socketCallback) {
     var User = require('./models/kullanici');
     var GrpMessage = require('./models/grpmessage');
     var users = {};
-    var giris = require('./config/passport');
-    var girmeyis = require('./routes/routes');
+    var giris = require('./routes/routes');
     function onConnection(socket) {
-
-
-
-
-
-
-        socket.emit('kisi', girmeyis.posta);
+        socket.emit('kisi', giris.posta);
 
         socket.on('yeni', function (data) {
 
-
-            socket.nickname = girmeyis.posta;
+            socket.nickname = giris.posta;
             users[socket.nickname] = socket;
 
             Message.find({
@@ -91,25 +83,18 @@ module.exports = exports = function(app, socketCallback) {
                     console.log(err);
                 if(veri !== null){
                     socket.emit('gonder', veri);
-
                 }
-
             });
             console.log("data : " + socket.nickname);
-
             updateNicknames();
         });
 
-
-
         function updateNicknames() {
             console.log("users : " + Object.keys(users));
-
             io.sockets.emit('usernames', Object.keys(users));
         }
 
         socket.on('gericevrim', function (data) {
-
             for(i=0; i<data.length; i++){
                 var isim = data[i].whom;
                 var msg = data[i].message.trim();
@@ -126,15 +111,9 @@ module.exports = exports = function(app, socketCallback) {
             }
         });
 
-
         socket.on('send message', function (data,callback) {
-
-
             var newMsg = new Message();
             var bosluk = "";
-
-
-
             var msg = data.mesaj.trim();
             if(msg.substring(0,1)=== '@'){
                 msg = msg.substring(1);
@@ -217,12 +196,10 @@ module.exports = exports = function(app, socketCallback) {
             newGrpMsg.message = data.mesaj;
             newGrpMsg.time = data.datee;
             newGrpMsg.group = data.room;
-
             newGrpMsg.save(function () {
                 console.log(newGrpMsg);
             });
         });
-
 
         socket.on('grpRoom', (data)=>{
             socket.join(data.name, ()=>{
@@ -237,9 +214,6 @@ module.exports = exports = function(app, socketCallback) {
                 socket.emit('log', {mesaj: 'Odaya girdiniz.'});
             });
         });
-
-
-
 
         socket.on('leave', (data)=>{
             socket.leave(data.name, ()=>{
@@ -258,12 +232,8 @@ module.exports = exports = function(app, socketCallback) {
             });
         });
 
-
-
-
         var params = socket.handshake.query;
         var socketMessageEvent = params.msgEvent || 'RTCMultiConnection-Message';
-
         var sessionid = params.sessionid;
         var autoCloseEntireSession = params.autoCloseEntireSession;
 
